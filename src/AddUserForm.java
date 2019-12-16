@@ -342,6 +342,7 @@ public class AddUserForm extends javax.swing.JFrame {
 
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
         this.hide();
+        
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2MouseClicked
 
