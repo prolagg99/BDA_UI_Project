@@ -245,8 +245,8 @@ public class MenuForm extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(37, 37, 37)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(providers, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(providers, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(products, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -347,22 +347,38 @@ public class MenuForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabelMinMouseClicked
 
     private void clientsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clientsActionPerformed
+        ClientsForm cf = new ClientsForm();
+        cf.show();
+        this.hide();
         // TODO add your handling code here:
     }//GEN-LAST:event_clientsActionPerformed
 
     private void productsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productsActionPerformed
+        ProductsForm pF = new ProductsForm( this );
+        pF.setVisible(true);
+        setVisible(false);
+        dispose();
+        
         // TODO add your handling code here:
     }//GEN-LAST:event_productsActionPerformed
 
     private void providersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_providersActionPerformed
+        ProvidersForm pf = new ProvidersForm();
+        pf.show();
+        this.hide();
         // TODO add your handling code here:
     }//GEN-LAST:event_providersActionPerformed
 
     private void usersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usersActionPerformed
+        UsersForm uf =  new UsersForm();
+        uf.show();
+        this.hide();
         // TODO add your handling code here:
     }//GEN-LAST:event_usersActionPerformed
 
     private void requestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_requestActionPerformed
+        OrderForm of = new OrderForm();
+        of.show();
         // TODO add your handling code here:
     }//GEN-LAST:event_requestActionPerformed
 
@@ -371,6 +387,8 @@ public class MenuForm extends javax.swing.JFrame {
     }//GEN-LAST:event_products7ActionPerformed
 
     private void salesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salesActionPerformed
+        SellsForm sf = new SellsForm();
+        sf.show();
         // TODO add your handling code here:
     }//GEN-LAST:event_salesActionPerformed
 
@@ -442,9 +460,6 @@ public class MenuForm extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
     private javax.swing.JButton products;
     private javax.swing.JButton products7;
     private javax.swing.JButton providers;

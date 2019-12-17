@@ -21,12 +21,7 @@ public class UsersForm extends javax.swing.JFrame {
     public UsersForm() {
         initComponents();
         this.setLocationRelativeTo(null);
-        
-        jTable1.getTableHeader().setOpaque(false);
-        jTable1.getTableHeader().setFont(new Font("Sojoe UI",Font.BOLD,12));
-        jTable1.getTableHeader().setBackground(new Color(0, 123, 255));
-        jTable1.getTableHeader().setForeground(new Color(255,255,255));
-        jTable1.setRowHeight(25);
+    
     }
 
     /**
@@ -295,7 +290,9 @@ public class UsersForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabelMinMouseClicked
 
     private void jLabelCloseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelCloseMouseClicked
-        System.exit(0);
+        this.hide();
+        MenuForm mf = new MenuForm();
+        mf.show();
     }//GEN-LAST:event_jLabelCloseMouseClicked
 
     private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
@@ -305,6 +302,8 @@ public class UsersForm extends javax.swing.JFrame {
     }//GEN-LAST:event_addActionPerformed
 
     private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
+        UpdateUserForm uu = new UpdateUserForm();
+        uu.show();
         // TODO add your handling code here:
     }//GEN-LAST:event_updateActionPerformed
 
@@ -313,6 +312,9 @@ public class UsersForm extends javax.swing.JFrame {
     }//GEN-LAST:event_deleteActionPerformed
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
+        this.hide();
+        MenuForm mf = new MenuForm();
+        mf.show();
         // TODO add your handling code here:
     }//GEN-LAST:event_backActionPerformed
 
