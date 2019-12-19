@@ -198,6 +198,9 @@ public class AddClientsForm extends javax.swing.JFrame {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 phoneKeyReleased(evt);
             }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                phoneKeyTyped(evt);
+            }
         });
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -342,22 +345,21 @@ public class AddClientsForm extends javax.swing.JFrame {
         // the msgForm will be shown here if the type = employee !
         if (firstName.getText().trim().isEmpty()) {
             nom.setText("le nom est requis");
-        }
+        }else
         if (lastName.getText().trim().isEmpty()) {
             pré.setText("Le prénom est requis");
-        }
+        }else
         if (adress.getText().trim().isEmpty()) {
             adrs.setText("l'adresse est requis");
-        }
+        }else
         if (phone.getText().trim().isEmpty()) {
             tél.setText("Num tél est requis");
+        }else{
+             String txt; 
+            txt = "add"; 
+            MsgForm mc = new MsgForm(txt);
+            mc.setVisible(true);
         }
-        String txt; 
-        txt = "add"; 
-        MsgForm mc = new MsgForm(txt);
-        mc.setVisible(true);
-
-        // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
@@ -410,6 +412,12 @@ public class AddClientsForm extends javax.swing.JFrame {
         tél.setText("");
         // TODO add your handling code here:
     }//GEN-LAST:event_phoneKeyReleased
+
+    private void phoneKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_phoneKeyTyped
+        char c = evt.getKeyChar();
+        if(Character.isLetter(c) &&! evt.isAltDown()){
+            evt.consume();
+        }    }//GEN-LAST:event_phoneKeyTyped
 
     /**
      * @param args the command line arguments

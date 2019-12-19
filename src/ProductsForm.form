@@ -327,12 +327,11 @@
                 <Component class="javax.swing.JTable" name="jTable1">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                      <Table columnCount="5" rowCount="9">
-                        <Column editable="true" title="Code_bare" type="java.lang.String"/>
-                        <Column editable="true" title="D&#xe9;signation" type="java.lang.String"/>
-                        <Column editable="true" title="Quantit&#xe9;" type="java.lang.String"/>
-                        <Column editable="true" title="Prix_de_vente" type="java.lang.Integer"/>
-                        <Column editable="true" title="Taux_TVA%" type="java.lang.String"/>
+                      <Table columnCount="4" rowCount="9">
+                        <Column editable="true" title="Code_bare" type="java.lang.Object"/>
+                        <Column editable="true" title="D&#xe9;signation" type="java.lang.Object"/>
+                        <Column editable="true" title="Quantit&#xe9;" type="java.lang.Object"/>
+                        <Column editable="true" title="Prix_de_vente" type="java.lang.Object"/>
                       </Table>
                     </Property>
                     <Property name="focusable" type="boolean" value="false"/>

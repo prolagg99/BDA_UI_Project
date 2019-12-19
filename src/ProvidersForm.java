@@ -1,5 +1,6 @@
 
 import javax.swing.JFrame;
+import javax.swing.table.TableModel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -16,11 +17,14 @@ public class ProvidersForm extends javax.swing.JFrame {
     /**
      * Creates new form ProvidersForm
      */
-    public ProvidersForm() {
+    private static JFrame mainForm;
+    public ProvidersForm(JFrame form) {
         initComponents();
         this.setLocationRelativeTo(null);
+        mainForm = form;
     }
-
+    OrderForm ofRowData = new OrderForm();
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -157,7 +161,7 @@ public class ProvidersForm extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
+                {"mebarki", "ahmed",  new Integer(6222), "bechar", "0"},
                 {null, null, null, null, null},
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -185,6 +189,11 @@ public class ProvidersForm extends javax.swing.JFrame {
         jTable1.setSelectionBackground(new java.awt.Color(248, 148, 6));
         jTable1.setShowVerticalLines(false);
         jTable1.getTableHeader().setReorderingAllowed(false);
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(jTable1);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -303,9 +312,9 @@ public class ProvidersForm extends javax.swing.JFrame {
     }//GEN-LAST:event_deleteActionPerformed
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
-        this.hide();
-        MenuForm mf = new MenuForm();
-        mf.show();
+        mainForm.setVisible(true);
+        setVisible(false);
+        dispose();
         // TODO add your handling code here:
     }//GEN-LAST:event_backActionPerformed
 
@@ -314,6 +323,20 @@ public class ProvidersForm extends javax.swing.JFrame {
         ap.show();
         // TODO add your handling code here:
     }//GEN-LAST:event_addActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+//       int index = jTable1.getSelectedRow();
+//       TableModel model = jTable1.getModel();
+//       String nom = model.getValueAt(index, 0).toString();
+//       String pré = model.getValueAt(index, 1).toString();
+//       
+//       ofRowData.setVisible(true);
+//       ofRowData.pack();
+//       ofRowData.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+//       
+//       ofRowData.providerName.setText(nom + " " + pré);
+//       this.hide();
+    }//GEN-LAST:event_jTable1MouseClicked
 
     /**
      * @param args the command line arguments
@@ -345,7 +368,7 @@ public class ProvidersForm extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ProvidersForm().setVisible(true);
+                new ProvidersForm(mainForm).setVisible(true);
             }
         });
     }

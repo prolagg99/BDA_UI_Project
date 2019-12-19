@@ -28,6 +28,13 @@ public class MsgForm extends javax.swing.JFrame {
         if(txt == "update"){
             jLabel1.setText("Mise à jour avec succès");
         }
+        if(txt == "loginS"){
+            jLabel1.setText("Vous êtes connecté");
+        }
+        if(txt == "loginF"){
+            jLabel1.setText("erreur! veuillez réessayer");
+        }
+
         jLabel1.setHorizontalAlignment(JLabel.CENTER);
     }
 

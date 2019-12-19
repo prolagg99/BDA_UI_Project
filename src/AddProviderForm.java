@@ -169,6 +169,9 @@ public class AddProviderForm extends javax.swing.JFrame {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 adressKeyReleased(evt);
             }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                adressKeyTyped(evt);
+            }
         });
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -374,25 +377,26 @@ public class AddProviderForm extends javax.swing.JFrame {
         
         if (firstName.getText().trim().isEmpty()) {
             nom.setText("le nom est requis");
-        }
+        }else
         if (lastName.getText().trim().isEmpty()) {
             pré.setText("Le prénom est requis");
-        }
+        }else
         if (adress.getText().trim().isEmpty()) {
             adrs.setText("l'adresse est requis");
-        }
+        }else
         if (phone.getText().trim().isEmpty()) {
             tél.setText("Num tél est requis");
-        }
+        }else
         if (fax.getText().trim().isEmpty()) {
             faxx.setText("le FAX est requis");
+        }else{
+            
+           String txt; 
+            txt = "add"; 
+            MsgForm mc = new MsgForm(txt);
+            mc.setVisible(true); 
         }
-        String txt; 
-        txt = "add"; 
-        MsgForm mc = new MsgForm(txt);
-        mc.setVisible(true);
-
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
@@ -449,6 +453,13 @@ public class AddProviderForm extends javax.swing.JFrame {
         faxx.setText("");
         // TODO add your handling code here:
     }//GEN-LAST:event_faxKeyReleased
+
+    private void adressKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_adressKeyTyped
+        char c = evt.getKeyChar();
+        if(Character.isLetter(c) &&! evt.isAltDown()){
+            evt.consume();
+        }
+    }//GEN-LAST:event_adressKeyTyped
 
     /**
      * @param args the command line arguments

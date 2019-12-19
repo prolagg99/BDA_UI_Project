@@ -1,5 +1,8 @@
 
+import java.awt.Color;
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
+import javax.swing.table.DefaultTableModel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -19,6 +22,7 @@ public class OrderForm extends javax.swing.JFrame {
     public OrderForm() {
         initComponents();
         this.setLocationRelativeTo(null);
+        
     }
 
     /**
@@ -44,7 +48,6 @@ public class OrderForm extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
-        providerName = new javax.swing.JTextField();
         add1 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         codeBare = new javax.swing.JTextField();
@@ -56,9 +59,9 @@ public class OrderForm extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         qnt = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
-        add2 = new javax.swing.JButton();
         add3 = new javax.swing.JButton();
-        update = new javax.swing.JButton();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        add2 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -161,34 +164,23 @@ public class OrderForm extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
-                "Date_c", "Code_à_barre", "Désignation", "Prix", "Quantité_c"
+                "Date_c", "Code_à_barre", "Désignation", "Prix_d'achat", "Quantité_c", "Fournisseur"
             }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
+        ));
         jTable1.setFocusable(false);
         jTable1.setIntercellSpacing(new java.awt.Dimension(0, 0));
         jTable1.setRowHeight(25);
         jTable1.setSelectionBackground(new java.awt.Color(248, 148, 6));
         jTable1.setShowVerticalLines(false);
         jTable1.getTableHeader().setReorderingAllowed(false);
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(jTable1);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -215,13 +207,6 @@ public class OrderForm extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel4.setText("Nom de fournisseur");
 
-        providerName.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        providerName.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                providerNameActionPerformed(evt);
-            }
-        });
-
         add1.setBackground(new java.awt.Color(238, 232, 213));
         add1.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         add1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/valid1.png"))); // NOI18N
@@ -242,11 +227,24 @@ public class OrderForm extends javax.swing.JFrame {
                 codeBareActionPerformed(evt);
             }
         });
+        codeBare.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                codeBareKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                codeBareKeyTyped(evt);
+            }
+        });
 
         désign.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         désign.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 désignActionPerformed(evt);
+            }
+        });
+        désign.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                désignKeyReleased(evt);
             }
         });
 
@@ -259,6 +257,11 @@ public class OrderForm extends javax.swing.JFrame {
                 dateActionPerformed(evt);
             }
         });
+        date.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                dateKeyReleased(evt);
+            }
+        });
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel7.setText("Date");
@@ -267,6 +270,14 @@ public class OrderForm extends javax.swing.JFrame {
         prix.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 prixActionPerformed(evt);
+            }
+        });
+        prix.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                prixKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                prixKeyTyped(evt);
             }
         });
 
@@ -279,20 +290,17 @@ public class OrderForm extends javax.swing.JFrame {
                 qntActionPerformed(evt);
             }
         });
+        qnt.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                qntKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                qntKeyTyped(evt);
+            }
+        });
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel9.setText("Quantité");
-
-        add2.setBackground(new java.awt.Color(238, 232, 213));
-        add2.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        add2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/search.png"))); // NOI18N
-        add2.setText("Choisir");
-        add2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        add2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                add2ActionPerformed(evt);
-            }
-        });
 
         add3.setBackground(new java.awt.Color(238, 232, 213));
         add3.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
@@ -305,14 +313,16 @@ public class OrderForm extends javax.swing.JFrame {
             }
         });
 
-        update.setBackground(new java.awt.Color(238, 232, 213));
-        update.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        update.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/product3.png"))); // NOI18N
-        update.setText("Produits");
-        update.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        update.addActionListener(new java.awt.event.ActionListener() {
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        add2.setBackground(new java.awt.Color(238, 232, 213));
+        add2.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        add2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/box.png"))); // NOI18N
+        add2.setText(" Produit");
+        add2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        add2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                updateActionPerformed(evt);
+                add2ActionPerformed(evt);
             }
         });
 
@@ -326,10 +336,8 @@ public class OrderForm extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(providerName, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(add2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(add3, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(159, 159, 159))
                     .addGroup(jPanel4Layout.createSequentialGroup()
@@ -343,7 +351,7 @@ public class OrderForm extends javax.swing.JFrame {
                                     .addComponent(add1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(delete, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
                                     .addComponent(back, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(update, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                    .addComponent(add2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel4Layout.createSequentialGroup()
@@ -374,18 +382,18 @@ public class OrderForm extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(8, 8, 8)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(providerName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(add2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(add3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(add3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addComponent(update, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(add2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(add1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -395,7 +403,6 @@ public class OrderForm extends javax.swing.JFrame {
                         .addGap(21, 21, 21)))
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(prix, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -410,7 +417,7 @@ public class OrderForm extends javax.swing.JFrame {
                                 .addComponent(désign, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(qnt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel7))
@@ -418,7 +425,7 @@ public class OrderForm extends javax.swing.JFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(15, 15, 15)
                         .addComponent(add, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addContainerGap(52, Short.MAX_VALUE))))
         );
 
         jPanel3.setBackground(new java.awt.Color(44, 62, 80));
@@ -462,7 +469,9 @@ public class OrderForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabelMinMouseClicked
 
     private void jLabelCloseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelCloseMouseClicked
-        System.exit(0);
+        this.hide();
+        MenuForm mf = new MenuForm();
+        mf.show();
     }//GEN-LAST:event_jLabelCloseMouseClicked
 
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
@@ -478,16 +487,37 @@ public class OrderForm extends javax.swing.JFrame {
 
     private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
         
-        // TODO add your handling code here:
+        if(codeBare.getText().trim().isEmpty()){
+            codeBare.setBorder(BorderFactory.createLineBorder(Color.red));
+        }else
+        if(désign.getText().trim().isEmpty()){
+            désign.setBorder(BorderFactory.createLineBorder(Color.red));
+        }else
+        if(date.getText().trim().isEmpty()){
+            date.setBorder(BorderFactory.createLineBorder(Color.red));
+        }else
+        if(prix.getText().trim().isEmpty()){
+            prix.setBorder(BorderFactory.createLineBorder(Color.red));
+        }else
+        if(qnt.getText().trim().isEmpty()){
+            qnt.setBorder(BorderFactory.createLineBorder(Color.red));
+        }else{
+            
+       
+        
+        DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+        model.addRow(new Object[]{date.getText(), codeBare.getText(), désign.getText(),
+        prix.getText(), qnt.getText(), jComboBox1.getSelectedItem()});
+            }
+       
     }//GEN-LAST:event_addActionPerformed
 
     private void add1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add1ActionPerformed
-        // TODO add your handling code here:
+       // need the DB to get all values of the table and add it to the DB
+        MsgForm mf = new MsgForm("add");
+        mf.show();
+        // need the DB to send all information exist in data base to anciant commande
     }//GEN-LAST:event_add1ActionPerformed
-
-    private void providerNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_providerNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_providerNameActionPerformed
 
     private void codeBareActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_codeBareActionPerformed
         // TODO add your handling code here:
@@ -509,23 +539,68 @@ public class OrderForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_qntActionPerformed
 
-    private void add2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_add2ActionPerformed
-
     private void add3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add3ActionPerformed
+        AddProviderForm ap = new AddProviderForm();
+        ap.show();
         // TODO add your handling code here:
     }//GEN-LAST:event_add3ActionPerformed
 
-    private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
-        ProductsForm pF = new ProductsForm( this );
-        pF.setVisible(true);
-        setVisible(false);
-        dispose();
-//        ProductsForm pf = new ProductsForm();
-//        pf.show();
+    private void codeBareKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codeBareKeyReleased
+        codeBare.setBorder(BorderFactory.createLineBorder(Color.green));
+        
         // TODO add your handling code here:
-    }//GEN-LAST:event_updateActionPerformed
+    }//GEN-LAST:event_codeBareKeyReleased
+
+    private void désignKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_désignKeyReleased
+        désign.setBorder(BorderFactory.createLineBorder(Color.green));
+        // TODO add your handling code here:
+    }//GEN-LAST:event_désignKeyReleased
+
+    private void dateKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dateKeyReleased
+        date.setBorder(BorderFactory.createLineBorder(Color.green));
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dateKeyReleased
+
+    private void prixKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_prixKeyReleased
+        prix.setBorder(BorderFactory.createLineBorder(Color.green));
+        // TODO add your handling code here:
+    }//GEN-LAST:event_prixKeyReleased
+
+    private void qntKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_qntKeyReleased
+        qnt.setBorder(BorderFactory.createLineBorder(Color.green));
+        // TODO add your handling code here:
+    }//GEN-LAST:event_qntKeyReleased
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void codeBareKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codeBareKeyTyped
+        char c = evt.getKeyChar();
+        if(Character.isLetter(c) &&! evt.isAltDown()){
+            evt.consume();
+        }
+    }//GEN-LAST:event_codeBareKeyTyped
+
+    private void prixKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_prixKeyTyped
+        char c = evt.getKeyChar();
+        if(Character.isLetter(c) &&! evt.isAltDown()){
+            evt.consume();
+        }
+    }//GEN-LAST:event_prixKeyTyped
+
+    private void qntKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_qntKeyTyped
+        char c = evt.getKeyChar();
+        if(Character.isLetter(c) &&! evt.isAltDown()){
+            evt.consume();
+        }
+    }//GEN-LAST:event_qntKeyTyped
+
+    private void add2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add2ActionPerformed
+        OrderedProsuctsForm opf = new OrderedProsuctsForm(this);
+        opf.show();
+        this.hide();
+    }//GEN-LAST:event_add2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -572,6 +647,7 @@ public class OrderForm extends javax.swing.JFrame {
     private javax.swing.JTextField date;
     private javax.swing.JButton delete;
     private javax.swing.JTextField désign;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -590,8 +666,6 @@ public class OrderForm extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField prix;
-    private javax.swing.JTextField providerName;
     private javax.swing.JTextField qnt;
-    private javax.swing.JButton update;
     // End of variables declaration//GEN-END:variables
 }

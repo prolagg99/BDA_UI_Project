@@ -1,5 +1,6 @@
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -16,9 +17,24 @@ public class PasswordForm extends javax.swing.JFrame {
     /**
      * Creates new form PasswordForm
      */
-    public PasswordForm() {
+    public static String txt;
+    public PasswordForm(String txt) {
         initComponents();
         this.setLocationRelativeTo(null);
+        
+        this.txt = txt;
+        if(txt == "login"){
+            jLabel1.setText("Entrer le mot de pass pour continu");
+        }
+        if(txt == "add"){
+            jLabel1.setText("Entrer le mot de pass de ce nouveau ingénieur"); 
+        }
+        if (txt == "update"){
+            jLabel1.setText("Entrer le mot de pass de ce ingénieur");
+        }
+        
+        
+        jLabel1.setHorizontalAlignment(JLabel.CENTER);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);        
     }
 
@@ -43,8 +59,6 @@ public class PasswordForm extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(238, 232, 213));
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(44, 62, 80), 2));
-
-        jLabel1.setText("Entrer votre mot de pass pour continuer");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel2.setText("Password");
@@ -98,10 +112,10 @@ public class PasswordForm extends javax.swing.JFrame {
                         .addGap(37, 37, 37)
                         .addComponent(jPasswordField1)))
                 .addGap(52, 52, 52))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(78, 78, 78)
-                .addComponent(jLabel1)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -138,9 +152,35 @@ public class PasswordForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        MenuForm mf = new MenuForm();
-        mf.show();
+
+        if(txt == "login"){
+            System.gc();
+            java.awt.Window win[] = java.awt.Window.getWindows(); 
+            for(int i=0;i<win.length;i++){ 
+            win[i].dispose(); 
+            win[i]=null;
+            }
+            MenuForm mf = new MenuForm();
+            mf.show();
+            MsgForm mfL = new MsgForm("login");
+            mfL.show();
+        }else
+            if(txt == "add"){
+                this.hide();
+                MsgForm mfL = new MsgForm("add");
+                mfL.show();
+            }else
+                if(txt == "update"){
+                    this.hide();
+                    MsgForm mfL = new MsgForm("update");
+                    mfL.show();
+                }else
+                    if(txt == "loginFaild"){
+                        this.hide();
+                        MsgForm mfl = new MsgForm("loginFaild");
+                    }
+        
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
@@ -177,7 +217,7 @@ public class PasswordForm extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new PasswordForm().setVisible(true);
+                new PasswordForm(txt).setVisible(true);
             }
         });
     }

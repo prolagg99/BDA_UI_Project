@@ -168,6 +168,9 @@ public class UpdateProviderForm extends javax.swing.JFrame {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 adress3KeyReleased(evt);
             }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                adress3KeyTyped(evt);
+            }
         });
 
         jLabel21.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -373,25 +376,24 @@ public class UpdateProviderForm extends javax.swing.JFrame {
 
         if (firstName3.getText().trim().isEmpty()) {
             nom.setText("le nom est requis");
-        }
+        }else
         if (lastName3.getText().trim().isEmpty()) {
             pré.setText("Le prénom est requis");
-        }
+        }else
         if (adress3.getText().trim().isEmpty()) {
             adrs.setText("l'adresse est requis");
-        }
+        }else
         if (phone3.getText().trim().isEmpty()) {
             tél.setText("Num tél est requis");
-        }
+        }else
         if (fax.getText().trim().isEmpty()) {
             faxx.setText("le FAX est requis");
+        }else{
+            String txt;
+            txt = "add";
+            MsgForm mc = new MsgForm(txt);
+            mc.setVisible(true);
         }
-        String txt;
-        txt = "add";
-        MsgForm mc = new MsgForm(txt);
-        mc.setVisible(true);
-
-        // TODO add your handling code here:
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton8MouseClicked
@@ -449,6 +451,13 @@ public class UpdateProviderForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_faxKeyReleased
 
+    private void adress3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_adress3KeyTyped
+        char c = evt.getKeyChar();
+        if(Character.isLetter(c) &&! evt.isAltDown()){
+            evt.consume();
+        }
+    }//GEN-LAST:event_adress3KeyTyped
+
     /**
      * @param args the command line arguments
      */
@@ -485,66 +494,27 @@ public class UpdateProviderForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField adress;
-    private javax.swing.JTextField adress1;
-    private javax.swing.JTextField adress2;
     private javax.swing.JTextField adress3;
     private javax.swing.JLabel adrs;
     private javax.swing.JTextField fax;
     private javax.swing.JLabel faxx;
-    private javax.swing.JTextField firstName;
-    private javax.swing.JTextField firstName1;
-    private javax.swing.JTextField firstName2;
     private javax.swing.JTextField firstName3;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel jLabelClose;
     private javax.swing.JLabel jLabelMin;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JTextField lastName;
-    private javax.swing.JTextField lastName1;
-    private javax.swing.JTextField lastName2;
     private javax.swing.JTextField lastName3;
     private javax.swing.JLabel nom;
-    private javax.swing.JTextField phone;
-    private javax.swing.JTextField phone1;
-    private javax.swing.JTextField phone2;
     private javax.swing.JTextField phone3;
     private javax.swing.JLabel pré;
     private javax.swing.JLabel tél;
