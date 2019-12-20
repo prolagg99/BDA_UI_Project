@@ -1,5 +1,10 @@
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 /*
@@ -22,8 +27,30 @@ public class ProvidersForm extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         mainForm = form;
+        readProviders();
     }
-    OrderForm ofRowData = new OrderForm();
+    
+    ResultSet rs = null;
+    private void readProviders(){
+        DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+        try (
+            Connection con = DbInfo.conDB();
+            ){
+                String sql = "SELECT * FROM `providers`";
+                PreparedStatement ps = con.prepareStatement(sql);
+                
+                rs = ps.executeQuery();
+                while(rs.next()){
+                    Object O[] = {rs.getString(2), rs.getString(3),rs.getString(4),
+                                  rs.getString(5),rs.getString(6)};
+                    model.addRow(O);
+                }
+                rs.close();
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e);
+        }
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -161,15 +188,7 @@ public class ProvidersForm extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "Nom", "Prénom", "Num_tél", "Adresse", "FAX"

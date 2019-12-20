@@ -1,7 +1,13 @@
+import java.sql.Connection;
 
-import java.awt.Color;
-import java.awt.Font;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -21,7 +27,29 @@ public class UsersForm extends javax.swing.JFrame {
     public UsersForm() {
         initComponents();
         this.setLocationRelativeTo(null);
+        readUsers();
+    }
     
+    ResultSet rs = null;
+    private void readUsers(){
+        DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+        try (
+            Connection con = DbInfo.conDB();
+            ){
+                String sql = "SELECT * FROM `users`";
+                PreparedStatement ps = con.prepareStatement(sql);
+                
+                rs = ps.executeQuery();
+                while(rs.next()){
+                    Object O[] = {rs.getString(2), rs.getString(4),rs.getString(5),
+                                  rs.getString(6),rs.getString(7),rs.getString(8)};
+                    model.addRow(O);
+                }
+                rs.close();
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e);
+        }
     }
 
     /**
@@ -122,22 +150,14 @@ public class UsersForm extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+
             },
             new String [] {
                 "User_name", "Nom", "Prénom", "Num_tél", "Service", "Type"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {

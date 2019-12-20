@@ -1,11 +1,16 @@
+import java.sql.Connection;
 
 import java.awt.Color;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import static javafx.scene.paint.Color.color;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
+
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -171,7 +176,7 @@ public class LoginForm extends javax.swing.JFrame {
             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        un.setForeground(new java.awt.Color(248, 148, 6));
+        un.setForeground(new java.awt.Color(255, 0, 51));
         un.setText(" ");
         un.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -179,7 +184,7 @@ public class LoginForm extends javax.swing.JFrame {
             }
         });
 
-        srv.setForeground(new java.awt.Color(248, 148, 6));
+        srv.setForeground(new java.awt.Color(255, 0, 51));
         srv.setText(" ");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -189,24 +194,25 @@ public class LoginForm extends javax.swing.JFrame {
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(srv, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(56, 56, 56)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(srv, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel3Layout.createSequentialGroup()
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(service, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel3Layout.createSequentialGroup()
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(un, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(userName, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel1)
                                 .addGap(18, 18, 18)
-                                .addComponent(service, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(un, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(userName, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addGap(56, 56, 56)
-                            .addComponent(jLabel1)
-                            .addGap(18, 18, 18)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(81, 81, 81)
                         .addComponent(jButton2)
@@ -338,39 +344,48 @@ public class LoginForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2MouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
         if(userName.getText().trim().isEmpty()){
-//            userName.setBorder(BorderFactory.createLineBorder(Color.red));
+            userName.setBorder(BorderFactory.createLineBorder(Color.red));
             un.setText("le nom d'utilisateur est requis");
-        }
+        }else
         if(service.getText().trim().isEmpty()){
+            service.setBorder(BorderFactory.createLineBorder(Color.red));
             srv.setText("le service est requis");
+        }else{
+            ResultSet rs = null;
+            try (
+                Connection con = DbInfo.conDB();
+            ){
+                String type = jComboBox1.getSelectedItem().toString();
+                String sql = "SELECT * FROM `users` WHERE role=? and userName=? and service=?";
+                PreparedStatement ps = con.prepareStatement(sql);
+
+                ps.setString(1, jComboBox1.getSelectedItem().toString());
+                ps.setString(2, userName.getText());
+                ps.setString(3, service.getText());
+
+                rs = ps.executeQuery();
+                if(rs.next()){
+                    if( type == "Employé" ){
+                        this.hide();
+                        MenuForm mf = new MenuForm();
+                        mf.show();
+                        MsgForm mgf = new MsgForm("loginS");
+                        mgf.show();
+                    }else if( type == "Ingénieur" ){
+                        PasswordForm pf = new PasswordForm("login");
+                        pf.setVisible(true);
+                    }
+                }else{
+                    MsgForm mgf = new MsgForm("loginF");
+                    mgf.show();
+                }
+                rs.close();
+                
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e);
+            }
         }
-        // need else of DB to check the imput right or wrong 
-        String type = String.valueOf(jComboBox1.getSelectedItem());
-//        if(xx == dbUserName && yy == dbPW){
-//            if( type == "Employé"){
-//                this.hide();
-//                MenuForm mf = new MenuForm();
-//                mf.show();
-//                MsgForm mgf = new MsgForm("loginS");
-//                mgf.show();
-//            }else if( type == "Ingénieur"){
-//                    PasswordForm pf = new PasswordForm("loginSuccess");
-//                    pf.setVisible(true);
-//            } 
-//        }else{
-//            if( type == "Employé"){
-//                MsgForm mgf = new MsgForm("loginF");
-//                mgf.show();
-//            }else if( type == "Ingénieur"){
-//                    PasswordForm pf = new PasswordForm("loginFaild");
-//                    pf.setVisible(true);
-//            } 
-//        }
-        
-        
-        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void formWindowStateChanged(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowStateChanged
@@ -391,13 +406,13 @@ public class LoginForm extends javax.swing.JFrame {
     }//GEN-LAST:event_unKeyReleased
 
     private void userNameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_userNameKeyReleased
+        userName.setBorder(BorderFactory.createLineBorder(Color.green));
         un.setText("");
-        // TODO add your handling code here:
     }//GEN-LAST:event_userNameKeyReleased
 
     private void serviceKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_serviceKeyReleased
+        service.setBorder(BorderFactory.createLineBorder(Color.green));
         srv.setText("");
-        // TODO add your handling code here:
     }//GEN-LAST:event_serviceKeyReleased
 
     /**

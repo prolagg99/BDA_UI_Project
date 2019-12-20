@@ -163,7 +163,7 @@
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Group type="103" groupAlignment="1" attributes="0">
                                           <Component id="tél" min="-2" pref="190" max="-2" attributes="0"/>
-                                          <Component id="phone" min="-2" pref="191" max="-2" attributes="0"/>
+                                          <Component id="adress" min="-2" pref="191" max="-2" attributes="0"/>
                                       </Group>
                                       <Group type="102" alignment="0" attributes="0">
                                           <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
@@ -184,7 +184,7 @@
                                       <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Component id="nom" alignment="0" min="-2" pref="190" max="-2" attributes="0"/>
-                                          <Component id="adress" min="-2" pref="191" max="-2" attributes="0"/>
+                                          <Component id="phone" min="-2" pref="191" max="-2" attributes="0"/>
                                           <Component id="lastName" alignment="0" min="-2" pref="191" max="-2" attributes="0"/>
                                           <Component id="pré" alignment="0" min="-2" pref="190" max="-2" attributes="0"/>
                                       </Group>
@@ -218,14 +218,14 @@
                   <Component id="pré" min="-2" pref="19" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="adress" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="phone" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="adrs" min="-2" pref="19" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="phone" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="adress" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
@@ -317,7 +317,7 @@
             <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="firstNameKeyReleased"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JTextField" name="adress">
+        <Component class="javax.swing.JTextField" name="phone">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ef" green="ec" red="e9" type="rgb"/>
@@ -327,9 +327,9 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="adressActionPerformed"/>
-            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="adressKeyReleased"/>
-            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="adressKeyTyped"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="phoneActionPerformed"/>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="phoneKeyReleased"/>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="phoneKeyTyped"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel6">
@@ -362,7 +362,7 @@
             <Property name="text" type="java.lang.String" value="Adresse"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="phone">
+        <Component class="javax.swing.JTextField" name="adress">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ef" green="ec" red="e9" type="rgb"/>
@@ -372,8 +372,8 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="phoneActionPerformed"/>
-            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="phoneKeyReleased"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="adressActionPerformed"/>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="adressKeyReleased"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel8">

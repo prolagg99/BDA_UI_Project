@@ -1,5 +1,10 @@
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -21,8 +26,29 @@ public class ProductsForm extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         mainForm = form;
+        readProducts();
     }
-
+    
+    ResultSet rs = null;
+    private void readProducts(){
+        DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+        try (
+            Connection con = DbInfo.conDB();
+            ){
+                String sql = "SELECT * FROM `sproducts`";
+                PreparedStatement ps = con.prepareStatement(sql);
+                
+                rs = ps.executeQuery();
+                while(rs.next()){
+                    Object O[] = {rs.getString(2), rs.getString(3), rs.getString(4),rs.getString(5)};
+                    model.addRow(O);
+                }
+                rs.close();
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e);
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -160,15 +186,7 @@ public class ProductsForm extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Code_bare", "Désignation", "Quantité", "Prix_de_vente"
@@ -296,9 +314,9 @@ public class ProductsForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabelMinMouseClicked
 
     private void jLabelCloseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelCloseMouseClicked
-        this.hide();
-        MenuForm mf = new MenuForm();
-        mf.show();
+        mainForm.setVisible(true);
+        setVisible(false);
+        dispose();
     }//GEN-LAST:event_jLabelCloseMouseClicked
 
     private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed

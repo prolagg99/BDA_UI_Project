@@ -1,6 +1,12 @@
 
+import java.awt.Color;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -66,6 +72,11 @@ public class PasswordForm extends javax.swing.JFrame {
         jPasswordField1.setBackground(new java.awt.Color(233, 236, 239));
         jPasswordField1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jPasswordField1.setForeground(new java.awt.Color(44, 62, 80));
+        jPasswordField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jPasswordField1KeyReleased(evt);
+            }
+        });
 
         jButton1.setBackground(new java.awt.Color(0, 123, 255));
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -152,18 +163,43 @@ public class PasswordForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if(jPasswordField1.getPassword().length == 0){
+            jPasswordField1.setBorder(BorderFactory.createLineBorder(Color.red));
+            jLabel1.setText("le mot de pass est requis");
+            jLabel1.setForeground(Color.red);
+        }else if(txt == "login"){
+             ResultSet rs = null;
+            try (
+                Connection con = DbInfo.conDB();
+            ){
+                String sql = "SELECT * FROM `users` WHERE password=?";
+                PreparedStatement ps = con.prepareStatement(sql);
 
-        if(txt == "login"){
-            System.gc();
-            java.awt.Window win[] = java.awt.Window.getWindows(); 
-            for(int i=0;i<win.length;i++){ 
-            win[i].dispose(); 
-            win[i]=null;
+                ps.setString(1, new String(jPasswordField1.getPassword()));
+                rs = ps.executeQuery();
+                
+                if(rs.next()){
+                   // to close all open windows
+                    System.gc();
+                    java.awt.Window win[] = java.awt.Window.getWindows(); 
+                    for(int i=0;i<win.length;i++){ 
+                    win[i].dispose(); 
+                    win[i]=null;
+                    }
+                    
+                    MenuForm mf = new MenuForm();
+                    mf.show();
+                    MsgForm mfL = new MsgForm("loginS");
+                    mfL.show();
+                }else{
+                    MsgForm mgf = new MsgForm("loginF");
+                    mgf.show();
+                }
+                rs.close();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e);
             }
-            MenuForm mf = new MenuForm();
-            mf.show();
-            MsgForm mfL = new MsgForm("login");
-            mfL.show();
+            
         }else
             if(txt == "add"){
                 this.hide();
@@ -186,6 +222,11 @@ public class PasswordForm extends javax.swing.JFrame {
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2MouseClicked
+
+    private void jPasswordField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPasswordField1KeyReleased
+        jPasswordField1.setBorder(BorderFactory.createLineBorder(Color.green));
+        jLabel1.setText("");
+    }//GEN-LAST:event_jPasswordField1KeyReleased
 
     /**
      * @param args the command line arguments

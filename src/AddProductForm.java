@@ -1,5 +1,8 @@
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -358,12 +361,34 @@ public class AddProductForm extends javax.swing.JFrame {
         }else
         if (prixVent.getText().trim().isEmpty()) {
             pv.setText("Num tél est requis");
-        }else{ 
-            // i need here a try block and data base with if statement ( products/ordred products add )
-            String txt; 
-            txt = "add"; 
-            MsgForm mc = new MsgForm(txt);
-            mc.setVisible(true); 
+        }else{
+            try(
+                Connection conn = DbInfo.conDB();
+                ){
+                    conn.setAutoCommit(false);
+                    String sql = "INSERT INTO `sproducts`(`codeBare`, `désign`, `quantité`, `prix`)"
+                            + "VALUES (?,?,?,?)";
+                    PreparedStatement ps = conn.prepareStatement(sql);
+                    
+                    ps.setString(1, codeBare.getText());
+                    ps.setString(2, désign.getText());
+                    ps.setString(3, qnt.getText());
+                    ps.setString(4, prixVent.getText());
+
+                    ps.executeUpdate();
+                    conn.commit();
+                    MsgForm mf = new MsgForm("add");
+                    mf.show();
+                    
+                    codeBare.setText("");
+                    désign.setText("");
+                    qnt.setText("");
+                    prixVent.setText("");
+                
+            }catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e);
+            }
+            
         }
         
     }//GEN-LAST:event_jButton1ActionPerformed

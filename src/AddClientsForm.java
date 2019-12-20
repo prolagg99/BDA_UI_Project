@@ -1,5 +1,8 @@
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -355,10 +358,33 @@ public class AddClientsForm extends javax.swing.JFrame {
         if (phone.getText().trim().isEmpty()) {
             tél.setText("Num tél est requis");
         }else{
-             String txt; 
-            txt = "add"; 
-            MsgForm mc = new MsgForm(txt);
-            mc.setVisible(true);
+            try(
+                Connection conn = DbInfo.conDB();
+                ){
+                    conn.setAutoCommit(false);
+                    String sql = "INSERT INTO `clients`(`firstName`, `LastName`, `phone`, `address`)"
+                            + "VALUES (?,?,?,?)";
+                    PreparedStatement ps = conn.prepareStatement(sql);
+                    
+                    ps.setString(1, firstName.getText());
+                    ps.setString(2, lastName.getText());
+                    ps.setString(3, phone.getText());
+                    ps.setString(4, adress.getText());
+
+                    ps.executeUpdate();
+                    conn.commit();
+                    MsgForm mf = new MsgForm("add");
+                    mf.show();
+                    
+                    firstName.setText("");
+                    lastName.setText("");
+                    adress.setText("");
+                    phone.setText("");
+                
+            }catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e);
+            }
+            
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

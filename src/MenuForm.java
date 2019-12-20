@@ -310,6 +310,11 @@ public class MenuForm extends javax.swing.JFrame {
 
         jMenuItem12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/box.png"))); // NOI18N
         jMenuItem12.setText("Produit Commandé");
+        jMenuItem12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem12ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem12);
 
         jMenuBar1.add(jMenu1);
@@ -431,6 +436,12 @@ public class MenuForm extends javax.swing.JFrame {
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem9ActionPerformed
+
+    private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
+       OrderedProsuctsForm opf = new OrderedProsuctsForm(this);
+       opf.show();
+       this.hide();
+    }//GEN-LAST:event_jMenuItem12ActionPerformed
 
     /**
      * @param args the command line arguments

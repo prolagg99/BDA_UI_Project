@@ -1,5 +1,12 @@
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -19,8 +26,29 @@ public class ClientsForm extends javax.swing.JFrame {
     public ClientsForm() {
         initComponents();
         this.setLocationRelativeTo(null);
+        readClients();
     }
 
+    ResultSet rs = null;
+    private void readClients(){
+        DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+        try (
+            Connection con = DbInfo.conDB();
+            ){
+                String sql = "SELECT * FROM `clients`";
+                PreparedStatement ps = con.prepareStatement(sql);
+                
+                rs = ps.executeQuery();
+                while(rs.next()){
+                    Object O[] = {rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)};
+                    model.addRow(O);
+                }
+                rs.close();
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e);
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -119,28 +147,12 @@ public class ClientsForm extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Nom", "Prénom", "Num_tél", "Adresse"
             }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
+        ));
         jTable1.setFocusable(false);
         jTable1.setIntercellSpacing(new java.awt.Dimension(0, 0));
         jTable1.setRowHeight(25);
@@ -203,6 +215,7 @@ public class ClientsForm extends javax.swing.JFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(35, 35, 35)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, 0)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(26, Short.MAX_VALUE))
         );
@@ -281,9 +294,25 @@ public class ClientsForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
+        int index = jTable1.getSelectedRow();
+        TableModel model = jTable1.getModel();
+        String nom = model.getValueAt(index, 0).toString();
+        String pré = model.getValueAt(index, 1).toString();
+        String phone = model.getValueAt(index, 2).toString();
+        String adr = model.getValueAt(index, 3).toString();
+        
         UpdateClientsForm uc = new UpdateClientsForm();
-        uc.show();
-        // TODO add your handling code here:
+        uc.setVisible(true);
+        uc.pack();
+        uc.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        
+        uc.firstName.setText(nom);
+        uc.lastName.setText(pré);
+        uc.phone.setText(phone);
+        uc.adress.setText(adr);
+//        int row = jTable1.getSelectedRow();
+//        String id = jTable1.getModel().getValueAt(row, 0).toString();
+//        uc.id.setText(Integer.toString(row));
     }//GEN-LAST:event_updateActionPerformed
 
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed

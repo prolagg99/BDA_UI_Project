@@ -33,6 +33,8 @@ public class MsgForm extends javax.swing.JFrame {
         }
         if(txt == "loginF"){
             jLabel1.setText("erreur! veuillez réessayer");
+        }if(txt == "DB"){
+            jLabel1.setText("check the DB");
         }
 
         jLabel1.setHorizontalAlignment(JLabel.CENTER);
@@ -97,8 +99,8 @@ public class MsgForm extends javax.swing.JFrame {
                 .addContainerGap(151, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(88, 88, 88))
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

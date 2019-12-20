@@ -1,5 +1,8 @@
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 /*
@@ -40,11 +43,11 @@ public class AddProviderForm extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         firstName = new javax.swing.JTextField();
-        adress = new javax.swing.JTextField();
+        phone = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         lastName = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        phone = new javax.swing.JTextField();
+        adress = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
@@ -158,19 +161,19 @@ public class AddProviderForm extends javax.swing.JFrame {
             }
         });
 
-        adress.setBackground(new java.awt.Color(233, 236, 239));
-        adress.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        adress.addActionListener(new java.awt.event.ActionListener() {
+        phone.setBackground(new java.awt.Color(233, 236, 239));
+        phone.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        phone.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                adressActionPerformed(evt);
+                phoneActionPerformed(evt);
             }
         });
-        adress.addKeyListener(new java.awt.event.KeyAdapter() {
+        phone.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                adressKeyReleased(evt);
+                phoneKeyReleased(evt);
             }
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                adressKeyTyped(evt);
+                phoneKeyTyped(evt);
             }
         });
 
@@ -193,16 +196,16 @@ public class AddProviderForm extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel7.setText("Adresse");
 
-        phone.setBackground(new java.awt.Color(233, 236, 239));
-        phone.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        phone.addActionListener(new java.awt.event.ActionListener() {
+        adress.setBackground(new java.awt.Color(233, 236, 239));
+        adress.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        adress.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                phoneActionPerformed(evt);
+                adressActionPerformed(evt);
             }
         });
-        phone.addKeyListener(new java.awt.event.KeyAdapter() {
+        adress.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                phoneKeyReleased(evt);
+                adressKeyReleased(evt);
             }
         });
 
@@ -283,7 +286,7 @@ public class AddProviderForm extends javax.swing.JFrame {
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(tél, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(phone, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(adress, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel3Layout.createSequentialGroup()
                                         .addGap(1, 1, 1)
                                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -298,7 +301,7 @@ public class AddProviderForm extends javax.swing.JFrame {
                                     .addGap(31, 31, 31)
                                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(nom, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(adress, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(phone, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(lastName, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(pré, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                         .addGap(97, 97, Short.MAX_VALUE))))
@@ -322,13 +325,13 @@ public class AddProviderForm extends javax.swing.JFrame {
                 .addComponent(pré, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(3, 3, 3)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(adress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(phone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(adrs, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(5, 5, 5)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(phone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(adress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
                 .addGap(5, 5, 5)
                 .addComponent(tél, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -381,20 +384,43 @@ public class AddProviderForm extends javax.swing.JFrame {
         if (lastName.getText().trim().isEmpty()) {
             pré.setText("Le prénom est requis");
         }else
-        if (adress.getText().trim().isEmpty()) {
+        if (phone.getText().trim().isEmpty()) {
             adrs.setText("l'adresse est requis");
         }else
-        if (phone.getText().trim().isEmpty()) {
+        if (adress.getText().trim().isEmpty()) {
             tél.setText("Num tél est requis");
         }else
         if (fax.getText().trim().isEmpty()) {
             faxx.setText("le FAX est requis");
         }else{
-            
-           String txt; 
-            txt = "add"; 
-            MsgForm mc = new MsgForm(txt);
-            mc.setVisible(true); 
+            try(
+                Connection conn = DbInfo.conDB();
+                ){
+                    conn.setAutoCommit(false);
+                    String sql = "INSERT INTO `providers`(`firstName`, `LastName`, `phone`, `address`, `fax`)"
+                            + "VALUES (?,?,?,?,?)";
+                    PreparedStatement ps = conn.prepareStatement(sql);
+                    
+                    ps.setString(1, firstName.getText());
+                    ps.setString(2, lastName.getText());
+                    ps.setString(3, phone.getText());
+                    ps.setString(4, adress.getText());
+                    ps.setString(5, fax.getText());
+
+                    ps.executeUpdate();
+                    conn.commit();
+                    MsgForm mf = new MsgForm("add");
+                    mf.show();
+                    
+                    firstName.setText("");
+                    lastName.setText("");
+                    phone.setText("");
+                    adress.setText("");
+                    fax.setText("");
+                
+            }catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e);
+            }
         }
         
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -413,17 +439,17 @@ public class AddProviderForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_firstNameActionPerformed
 
-    private void adressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adressActionPerformed
+    private void phoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phoneActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_adressActionPerformed
+    }//GEN-LAST:event_phoneActionPerformed
 
     private void lastNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lastNameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_lastNameActionPerformed
 
-    private void phoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phoneActionPerformed
+    private void adressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adressActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_phoneActionPerformed
+    }//GEN-LAST:event_adressActionPerformed
 
     private void faxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_faxActionPerformed
         // TODO add your handling code here:
@@ -434,32 +460,32 @@ public class AddProviderForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_firstNameKeyReleased
 
-    private void adressKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_adressKeyReleased
+    private void phoneKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_phoneKeyReleased
         adrs.setText("");
         // TODO add your handling code here:
-    }//GEN-LAST:event_adressKeyReleased
+    }//GEN-LAST:event_phoneKeyReleased
 
     private void lastNameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lastNameKeyReleased
         pré.setText("");
         // TODO add your handling code here:
     }//GEN-LAST:event_lastNameKeyReleased
 
-    private void phoneKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_phoneKeyReleased
+    private void adressKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_adressKeyReleased
         tél.setText("");
         // TODO add your handling code here:
-    }//GEN-LAST:event_phoneKeyReleased
+    }//GEN-LAST:event_adressKeyReleased
 
     private void faxKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_faxKeyReleased
         faxx.setText("");
         // TODO add your handling code here:
     }//GEN-LAST:event_faxKeyReleased
 
-    private void adressKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_adressKeyTyped
+    private void phoneKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_phoneKeyTyped
         char c = evt.getKeyChar();
         if(Character.isLetter(c) &&! evt.isAltDown()){
             evt.consume();
         }
-    }//GEN-LAST:event_adressKeyTyped
+    }//GEN-LAST:event_phoneKeyTyped
 
     /**
      * @param args the command line arguments
