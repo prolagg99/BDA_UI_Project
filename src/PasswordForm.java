@@ -23,10 +23,12 @@ public class PasswordForm extends javax.swing.JFrame {
     /**
      * Creates new form PasswordForm
      */
+    private static int userId;
     public static String txt;
     public PasswordForm(String txt) {
         initComponents();
         this.setLocationRelativeTo(null);
+        id.setVisible(true);
         
         this.txt = txt;
         if(txt == "login"){
@@ -59,6 +61,7 @@ public class PasswordForm extends javax.swing.JFrame {
         jPasswordField1 = new javax.swing.JPasswordField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        id = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -107,6 +110,8 @@ public class PasswordForm extends javax.swing.JFrame {
             }
         });
 
+        id.setText("    ");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -127,11 +132,17 @@ public class PasswordForm extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(id, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(44, Short.MAX_VALUE)
+                .addContainerGap(12, Short.MAX_VALUE)
+                .addComponent(id)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
@@ -202,9 +213,33 @@ public class PasswordForm extends javax.swing.JFrame {
             
         }else
             if(txt == "add"){
-                this.hide();
-                MsgForm mfL = new MsgForm("add");
-                mfL.show();
+                try (
+                    Connection con = DbInfo.conDB();
+                    ){
+                    String sql = "UPDATE `users` SET `password`=? WHERE id=?";
+                    PreparedStatement ps = con.prepareStatement(sql);
+                    
+                    String passText = new String(jPasswordField1.getPassword());
+                    ps.setString(1, passText);
+                    ps.setString(2, id.getText());
+                    ps.executeUpdate();
+                    // close previous jFrames
+                    System.gc();
+                    java.awt.Window win[] = java.awt.Window.getWindows(); 
+                    for(int i=0;i<win.length;i++){ 
+                        win[i].dispose(); 
+                        win[i]=null;
+                    } 
+                    UsersForm uf = new UsersForm();
+                    uf.setVisible(true);
+                    uf.pack();
+                    uf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    MsgForm mf = new MsgForm("add");
+                    mf.show();
+
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, e);
+                }
             }else
                 if(txt == "update"){
                     this.hide();
@@ -264,6 +299,7 @@ public class PasswordForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JLabel id;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;

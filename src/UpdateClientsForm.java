@@ -7,6 +7,7 @@ import java.sql.Statement;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -381,7 +382,6 @@ public class UpdateClientsForm extends javax.swing.JFrame {
             try (
                 Connection conn = DbInfo.conDB();
             ){
-//                int id1 = Integer.parseInt(id.getText());
                 String sql = "UPDATE `clients` SET `firstName`=?,`LastName`=?,`phone`=?,`address`=? WHERE id=?";
                 PreparedStatement ps = conn.prepareStatement(sql);
                 
@@ -389,18 +389,27 @@ public class UpdateClientsForm extends javax.swing.JFrame {
                 ps.setString(2, lastName.getText());
                 ps.setString(3, phone.getText());
                 ps.setString(4, adress.getText());
+                ps.setString(5, id.getText());
                 
                 ps.executeUpdate();
+                // close all previous frames after updatin and click the update button
+                System.gc();
+                java.awt.Window win[] = java.awt.Window.getWindows(); 
+                for(int i=0;i<win.length;i++){ 
+                    win[i].dispose(); 
+                    win[i]=null;
+                } 
+                ClientsForm cf = new ClientsForm();
+                cf.setVisible(true);
+                cf.pack();
+                cf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 
-                String txt; 
-                txt = "update"; 
-                MsgForm mc = new MsgForm(txt);
+                MsgForm mc = new MsgForm("update");
                 mc.setVisible(true);
                 
             } catch (SQLException e) {
                 JOptionPane.showMessageDialog(this, e);
             }
-            
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

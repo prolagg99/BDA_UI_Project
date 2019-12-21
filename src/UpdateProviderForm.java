@@ -1,5 +1,9 @@
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -19,6 +23,7 @@ public class UpdateProviderForm extends javax.swing.JFrame {
     public UpdateProviderForm() {
         initComponents();
         this.setLocationRelativeTo(null);
+        id.setVisible(false);
     }
 
     /**
@@ -38,22 +43,23 @@ public class UpdateProviderForm extends javax.swing.JFrame {
         jLabel20 = new javax.swing.JLabel();
         jButton7 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
-        firstName3 = new javax.swing.JTextField();
-        adress3 = new javax.swing.JTextField();
+        firstName = new javax.swing.JTextField();
+        phone = new javax.swing.JTextField();
         jLabel21 = new javax.swing.JLabel();
-        lastName3 = new javax.swing.JTextField();
+        lastName = new javax.swing.JTextField();
         jLabel22 = new javax.swing.JLabel();
-        phone3 = new javax.swing.JTextField();
+        adress = new javax.swing.JTextField();
         jLabel23 = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
         jLabel24 = new javax.swing.JLabel();
-        fax = new javax.swing.JTextField();
+        fax1 = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         faxx = new javax.swing.JLabel();
         nom = new javax.swing.JLabel();
         tél = new javax.swing.JLabel();
         pré = new javax.swing.JLabel();
         adrs = new javax.swing.JLabel();
+        id = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -144,64 +150,64 @@ public class UpdateProviderForm extends javax.swing.JFrame {
             }
         });
 
-        firstName3.setBackground(new java.awt.Color(233, 236, 239));
-        firstName3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        firstName3.addActionListener(new java.awt.event.ActionListener() {
+        firstName.setBackground(new java.awt.Color(233, 236, 239));
+        firstName.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        firstName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                firstName3ActionPerformed(evt);
+                firstNameActionPerformed(evt);
             }
         });
-        firstName3.addKeyListener(new java.awt.event.KeyAdapter() {
+        firstName.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                firstName3KeyReleased(evt);
+                firstNameKeyReleased(evt);
             }
         });
 
-        adress3.setBackground(new java.awt.Color(233, 236, 239));
-        adress3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        adress3.addActionListener(new java.awt.event.ActionListener() {
+        phone.setBackground(new java.awt.Color(233, 236, 239));
+        phone.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        phone.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                adress3ActionPerformed(evt);
+                phoneActionPerformed(evt);
             }
         });
-        adress3.addKeyListener(new java.awt.event.KeyAdapter() {
+        phone.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                adress3KeyReleased(evt);
+                phoneKeyReleased(evt);
             }
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                adress3KeyTyped(evt);
+                phoneKeyTyped(evt);
             }
         });
 
         jLabel21.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel21.setText("Prénom");
 
-        lastName3.setBackground(new java.awt.Color(233, 236, 239));
-        lastName3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        lastName3.addActionListener(new java.awt.event.ActionListener() {
+        lastName.setBackground(new java.awt.Color(233, 236, 239));
+        lastName.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lastName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                lastName3ActionPerformed(evt);
+                lastNameActionPerformed(evt);
             }
         });
-        lastName3.addKeyListener(new java.awt.event.KeyAdapter() {
+        lastName.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                lastName3KeyReleased(evt);
+                lastNameKeyReleased(evt);
             }
         });
 
         jLabel22.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel22.setText("Adresse");
 
-        phone3.setBackground(new java.awt.Color(233, 236, 239));
-        phone3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        phone3.addActionListener(new java.awt.event.ActionListener() {
+        adress.setBackground(new java.awt.Color(233, 236, 239));
+        adress.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        adress.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                phone3ActionPerformed(evt);
+                adressActionPerformed(evt);
             }
         });
-        phone3.addKeyListener(new java.awt.event.KeyAdapter() {
+        adress.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                phone3KeyReleased(evt);
+                adressKeyReleased(evt);
             }
         });
 
@@ -228,16 +234,16 @@ public class UpdateProviderForm extends javax.swing.JFrame {
             .addComponent(jLabel24, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        fax.setBackground(new java.awt.Color(233, 236, 239));
-        fax.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        fax.addActionListener(new java.awt.event.ActionListener() {
+        fax1.setBackground(new java.awt.Color(233, 236, 239));
+        fax1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        fax1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                faxActionPerformed(evt);
+                fax1ActionPerformed(evt);
             }
         });
-        fax.addKeyListener(new java.awt.event.KeyAdapter() {
+        fax1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                faxKeyReleased(evt);
+                fax1KeyReleased(evt);
             }
         });
 
@@ -254,18 +260,22 @@ public class UpdateProviderForm extends javax.swing.JFrame {
 
         adrs.setForeground(new java.awt.Color(248, 148, 6));
 
+        id.setText("           ");
+
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel9Layout.createSequentialGroup()
-                .addGap(107, 107, 107)
+                .addContainerGap()
+                .addComponent(id)
+                .addGap(63, 63, 63)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel9Layout.createSequentialGroup()
                         .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(28, 28, 28)
-                        .addComponent(firstName3, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(firstName, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel9Layout.createSequentialGroup()
                         .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -282,12 +292,12 @@ public class UpdateProviderForm extends javax.swing.JFrame {
                                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(tél, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(phone3, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(adress, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel9Layout.createSequentialGroup()
                                         .addGap(1, 1, 1)
                                         .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(faxx, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(fax, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                            .addComponent(fax1, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                             .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addComponent(adrs, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(jPanel9Layout.createSequentialGroup()
@@ -297,8 +307,8 @@ public class UpdateProviderForm extends javax.swing.JFrame {
                                     .addGap(31, 31, 31)
                                     .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(nom, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(adress3, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(lastName3, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(phone, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(lastName, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(pré, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                         .addContainerGap(97, Short.MAX_VALUE))))
         );
@@ -309,31 +319,33 @@ public class UpdateProviderForm extends javax.swing.JFrame {
                 .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(firstName3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(firstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel20))
                 .addGap(6, 6, 6)
-                .addComponent(nom, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(nom, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(id))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lastName3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel21))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pré, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(3, 3, 3)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(adress3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(phone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel23))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(adrs, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(5, 5, 5)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(phone3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(adress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel22))
                 .addGap(5, 5, 5)
                 .addComponent(tél, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(fax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fax1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(faxx, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -374,25 +386,56 @@ public class UpdateProviderForm extends javax.swing.JFrame {
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // the msgForm will be shown here if the type = employee !
 
-        if (firstName3.getText().trim().isEmpty()) {
+        if (firstName.getText().trim().isEmpty()) {
             nom.setText("le nom est requis");
         }else
-        if (lastName3.getText().trim().isEmpty()) {
+        if (lastName.getText().trim().isEmpty()) {
             pré.setText("Le prénom est requis");
         }else
-        if (adress3.getText().trim().isEmpty()) {
+        if (phone.getText().trim().isEmpty()) {
             adrs.setText("l'adresse est requis");
         }else
-        if (phone3.getText().trim().isEmpty()) {
+        if (adress.getText().trim().isEmpty()) {
             tél.setText("Num tél est requis");
         }else
-        if (fax.getText().trim().isEmpty()) {
+        if (fax1.getText().trim().isEmpty()) {
             faxx.setText("le FAX est requis");
         }else{
-            String txt;
-            txt = "add";
-            MsgForm mc = new MsgForm(txt);
-            mc.setVisible(true);
+            try (
+                Connection conn = DbInfo.conDB();
+            ){
+                String sql = "UPDATE `providers` SET `firstName`=?,`LastName`=?,`phone`=?,`address`=?, `fax`=? WHERE id=?";
+                PreparedStatement ps = conn.prepareStatement(sql);
+                
+                ps.setString(1, firstName.getText());
+                ps.setString(2, lastName.getText());
+                ps.setString(3, phone.getText());
+                ps.setString(4, adress.getText());
+                ps.setString(5, fax1.getText());
+                ps.setString(6, id.getText());
+                
+                ps.executeUpdate();
+                // close all previous frames after updatin and click the update button
+                System.gc();
+                java.awt.Window win[] = java.awt.Window.getWindows(); 
+                for(int i=0;i<win.length;i++){ 
+                    win[i].dispose(); 
+                    win[i]=null;
+                } 
+                
+                ProvidersForm pf = new ProvidersForm();
+                pf.setVisible(true);
+                pf.pack();
+                pf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                
+                String txt; 
+                txt = "update"; 
+                MsgForm mc = new MsgForm(txt);
+                mc.setVisible(true);
+                
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, e);
+            }
         }
     }//GEN-LAST:event_jButton7ActionPerformed
 
@@ -406,57 +449,57 @@ public class UpdateProviderForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton8ActionPerformed
 
-    private void firstName3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_firstName3ActionPerformed
+    private void firstNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_firstNameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_firstName3ActionPerformed
+    }//GEN-LAST:event_firstNameActionPerformed
 
-    private void firstName3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_firstName3KeyReleased
+    private void firstNameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_firstNameKeyReleased
         nom.setText("");
         // TODO add your handling code here:
-    }//GEN-LAST:event_firstName3KeyReleased
+    }//GEN-LAST:event_firstNameKeyReleased
 
-    private void adress3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adress3ActionPerformed
+    private void phoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phoneActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_adress3ActionPerformed
+    }//GEN-LAST:event_phoneActionPerformed
 
-    private void adress3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_adress3KeyReleased
+    private void phoneKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_phoneKeyReleased
         adrs.setText("");
         // TODO add your handling code here:
-    }//GEN-LAST:event_adress3KeyReleased
+    }//GEN-LAST:event_phoneKeyReleased
 
-    private void lastName3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lastName3ActionPerformed
+    private void lastNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lastNameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_lastName3ActionPerformed
+    }//GEN-LAST:event_lastNameActionPerformed
 
-    private void lastName3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lastName3KeyReleased
+    private void lastNameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lastNameKeyReleased
         pré.setText("");
         // TODO add your handling code here:
-    }//GEN-LAST:event_lastName3KeyReleased
+    }//GEN-LAST:event_lastNameKeyReleased
 
-    private void phone3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phone3ActionPerformed
+    private void adressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adressActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_phone3ActionPerformed
+    }//GEN-LAST:event_adressActionPerformed
 
-    private void phone3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_phone3KeyReleased
+    private void adressKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_adressKeyReleased
         tél.setText("");
         // TODO add your handling code here:
-    }//GEN-LAST:event_phone3KeyReleased
+    }//GEN-LAST:event_adressKeyReleased
 
-    private void faxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_faxActionPerformed
+    private void fax1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fax1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_faxActionPerformed
+    }//GEN-LAST:event_fax1ActionPerformed
 
-    private void faxKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_faxKeyReleased
+    private void fax1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fax1KeyReleased
         faxx.setText("");
         // TODO add your handling code here:
-    }//GEN-LAST:event_faxKeyReleased
+    }//GEN-LAST:event_fax1KeyReleased
 
-    private void adress3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_adress3KeyTyped
+    private void phoneKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_phoneKeyTyped
         char c = evt.getKeyChar();
         if(Character.isLetter(c) &&! evt.isAltDown()){
             evt.consume();
         }
-    }//GEN-LAST:event_adress3KeyTyped
+    }//GEN-LAST:event_phoneKeyTyped
 
     /**
      * @param args the command line arguments
@@ -494,11 +537,12 @@ public class UpdateProviderForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField adress3;
+    public javax.swing.JTextField adress;
     private javax.swing.JLabel adrs;
-    private javax.swing.JTextField fax;
+    public javax.swing.JTextField fax1;
     private javax.swing.JLabel faxx;
-    private javax.swing.JTextField firstName3;
+    public javax.swing.JTextField firstName;
+    public javax.swing.JLabel id;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel2;
@@ -513,9 +557,9 @@ public class UpdateProviderForm extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JTextField lastName3;
+    public javax.swing.JTextField lastName;
     private javax.swing.JLabel nom;
-    private javax.swing.JTextField phone3;
+    public javax.swing.JTextField phone;
     private javax.swing.JLabel pré;
     private javax.swing.JLabel tél;
     // End of variables declaration//GEN-END:variables

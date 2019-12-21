@@ -409,14 +409,20 @@ public class AddProviderForm extends javax.swing.JFrame {
 
                     ps.executeUpdate();
                     conn.commit();
+                    
+                     // to close all the previous jframe 
+                    System.gc();
+                    java.awt.Window win[] = java.awt.Window.getWindows(); 
+                    for(int i=0;i<win.length;i++){ 
+                        win[i].dispose(); 
+                        win[i]=null;
+                    } 
+                    ProvidersForm pf = new ProvidersForm();
+                    pf.setVisible(true);
+                    pf.pack();
+                    pf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                     MsgForm mf = new MsgForm("add");
                     mf.show();
-                    
-                    firstName.setText("");
-                    lastName.setText("");
-                    phone.setText("");
-                    adress.setText("");
-                    fax.setText("");
                 
             }catch (Exception e) {
                 JOptionPane.showMessageDialog(this, e);

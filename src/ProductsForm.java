@@ -1,10 +1,14 @@
 
+
+import java.awt.HeadlessException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -21,11 +25,17 @@ public class ProductsForm extends javax.swing.JFrame {
     /**
      * Creates new form ProductsForm
      */
+    public static int productId;
     private static JFrame mainForm;
     public ProductsForm(JFrame form) {
         initComponents();
         this.setLocationRelativeTo(null);
         mainForm = form;
+        readProducts();
+    }
+    public ProductsForm() {
+        initComponents();
+        this.setLocationRelativeTo(null);
         readProducts();
     }
     
@@ -320,13 +330,74 @@ public class ProductsForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabelCloseMouseClicked
 
     private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
+        int index = jTable1.getSelectedRow();
+        TableModel model = jTable1.getModel();
+        String codeB = model.getValueAt(index, 0).toString();
+        String désign = model.getValueAt(index, 1).toString();
+        String qnt = model.getValueAt(index, 2).toString();
+        String prix = model.getValueAt(index, 3).toString();
+        
+        
+        getProductId(codeB, désign);
+        
         UpdateProductForm up = new UpdateProductForm();
-        up.show();
-        // TODO add your handling code here:
+        up.setVisible(true);
+        up.pack();
+        up.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        
+        up.codeBare.setText(codeB);
+        up.désign.setText(désign);
+        up.qnt.setText(qnt);
+        up.prixVent.setText(prix);
+        up.id.setText(Integer.toString(productId));
     }//GEN-LAST:event_updateActionPerformed
 
+    private void getProductId(String codeB, String désign) throws HeadlessException {
+        ResultSet rs = null;
+        try(
+                Connection con = DbInfo.conDB();
+                ) {
+            // get the id of selected row
+            String sql = "SELECT * FROM `sproducts` WHERE codeBare=? and désign=?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            
+            ps.setString(1, codeB);
+            ps.setString(2, désign);
+            rs = ps.executeQuery();
+            while(rs.next()){
+                productId = rs.getInt(1);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e);
+        }
+    }
+
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
-        // TODO add your handling code here:
+        int index = jTable1.getSelectedRow();
+        TableModel model = jTable1.getModel();
+        String codeB = model.getValueAt(index, 0).toString();
+        String désign = model.getValueAt(index, 1).toString();
+        
+        getProductId(codeB, désign);
+        
+        try (
+                Connection con = DbInfo.conDB();
+            ){
+                String sql = "DELETE FROM `sproducts` WHERE id=?";
+                PreparedStatement ps = con.prepareStatement(sql);
+                ps.setInt(1, productId);
+                ps.executeUpdate();
+                
+                MsgForm mf = new MsgForm("delete");
+                mf.show();
+                
+                DefaultTableModel model1 = (DefaultTableModel)jTable1.getModel();
+                model1.setRowCount(0);
+                readProducts();
+                
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, e);
+            }
     }//GEN-LAST:event_deleteActionPerformed
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed

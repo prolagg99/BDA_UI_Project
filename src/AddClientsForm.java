@@ -373,13 +373,19 @@ public class AddClientsForm extends javax.swing.JFrame {
 
                     ps.executeUpdate();
                     conn.commit();
+                    // to close all the previous jframe 
+                    System.gc();
+                    java.awt.Window win[] = java.awt.Window.getWindows(); 
+                    for(int i=0;i<win.length;i++){ 
+                        win[i].dispose(); 
+                        win[i]=null;
+                    } 
+                    ClientsForm cf = new ClientsForm();
+                    cf.setVisible(true);
+                    cf.pack();
+                    cf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                     MsgForm mf = new MsgForm("add");
                     mf.show();
-                    
-                    firstName.setText("");
-                    lastName.setText("");
-                    adress.setText("");
-                    phone.setText("");
                 
             }catch (Exception e) {
                 JOptionPane.showMessageDialog(this, e);

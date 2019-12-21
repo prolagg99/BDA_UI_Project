@@ -1,5 +1,7 @@
 
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.table.DefaultTableModel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -27,6 +29,9 @@ public class MsgForm extends javax.swing.JFrame {
         }
         if(txt == "update"){
             jLabel1.setText("Mise à jour avec succès");
+        }
+        if(txt == "delete"){
+            jLabel1.setText("Supprimé avec succès");
         }
         if(txt == "loginS"){
             jLabel1.setText("Vous êtes connecté");
@@ -148,7 +153,6 @@ public class MsgForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
         this.hide();
     }//GEN-LAST:event_jButton4ActionPerformed
 

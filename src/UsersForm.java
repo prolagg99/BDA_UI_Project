@@ -1,8 +1,11 @@
+
+import java.awt.HeadlessException;
 import java.sql.Connection;
 
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -24,6 +27,8 @@ public class UsersForm extends javax.swing.JFrame {
     /**
      * Creates new form UsersForm
      */
+    private static int userId;
+    private static String password;
     public UsersForm() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -322,14 +327,94 @@ public class UsersForm extends javax.swing.JFrame {
     }//GEN-LAST:event_addActionPerformed
 
     private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
-        UpdateUserForm uu = new UpdateUserForm();
-        uu.show();
-        // TODO add your handling code here:
+        int index = jTable1.getSelectedRow();
+        TableModel model = jTable1.getModel();
+        String un = model.getValueAt(index, 0).toString();
+        String nom = model.getValueAt(index, 1).toString();
+        String pré = model.getValueAt(index, 2).toString();
+        String phone = model.getValueAt(index, 3).toString();
+        String service = model.getValueAt(index, 4).toString();
+        String type = model.getValueAt(index, 5).toString();
+       
+        try (
+                Connection con = DbInfo.conDB();
+            ){
+                String sql = "SELECT * FROM `users` WHERE userName=? and role=?";
+                PreparedStatement ps = con.prepareStatement(sql);
+
+                ps.setString(1, un);
+                ps.setString(2, type);
+                ResultSet rs = ps.executeQuery();
+                while(rs.next()){
+                    userId = rs.getInt(1);
+                    password = rs.getString(3);
+                }
+        }catch (Exception e) {
+        JOptionPane.showMessageDialog(this, e);
+        }
+        
+            UpdateUserForm uu = new UpdateUserForm();
+            uu.setVisible(true);
+            uu.pack();
+            uu.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            
+            uu.user.setText(un);
+            uu.firstName.setText(nom);
+            uu.lastName.setText(pré);
+            uu.phone1.setText(phone);
+            uu.service.setText(service);
+            uu.jComboBox1.setSelectedItem(type);
+            uu.id.setText(Integer.toString(userId));
+
     }//GEN-LAST:event_updateActionPerformed
 
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
-        // TODO add your handling code here:
+        int index = jTable1.getSelectedRow();
+        TableModel model = jTable1.getModel();
+        String nom = model.getValueAt(index, 1).toString();
+        String pré = model.getValueAt(index, 2).toString();
+        String phone = model.getValueAt(index, 3).toString();
+        
+        getUserId(nom, pré, phone);
+        
+        try (
+                Connection con = DbInfo.conDB();
+            ){
+                String sql = "DELETE FROM `users` WHERE id=?";
+                PreparedStatement ps = con.prepareStatement(sql);
+                ps.setInt(1, userId);
+                ps.executeUpdate();
+                
+                MsgForm mf = new MsgForm("delete");
+                mf.show();
+                
+                DefaultTableModel model1 = (DefaultTableModel)jTable1.getModel();
+                model1.setRowCount(0);
+                readUsers();
+                
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, e);
+            }      
     }//GEN-LAST:event_deleteActionPerformed
+
+    private void getUserId(String nom, String pré, String phone) throws HeadlessException {
+        ResultSet rs=null;
+        try (
+                Connection conn = DbInfo.conDB();
+                ){
+            String sql = "SELECT * FROM `users` WHERE firstName=? and lastName=? and phone=?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, nom);
+            ps.setString(2, pré);
+            ps.setString(3, phone);
+            rs = ps.executeQuery();
+            while(rs.next()){
+                userId = rs.getInt(1);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e);
+        }
+    }
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
         this.hide();
@@ -387,7 +472,7 @@ public class UsersForm extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
+    public javax.swing.JTable jTable1;
     private javax.swing.JButton update;
     // End of variables declaration//GEN-END:variables
 }

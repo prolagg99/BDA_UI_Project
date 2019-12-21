@@ -1,7 +1,10 @@
 
+
+import java.awt.HeadlessException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -22,11 +25,17 @@ public class ProvidersForm extends javax.swing.JFrame {
     /**
      * Creates new form ProvidersForm
      */
+    public static int providerId;
     private static JFrame mainForm;
     public ProvidersForm(JFrame form) {
         initComponents();
         this.setLocationRelativeTo(null);
         mainForm = form;
+        readProviders();
+    }
+    public ProvidersForm() {
+        initComponents();
+        this.setLocationRelativeTo(null);
         readProviders();
     }
     
@@ -313,13 +322,77 @@ public class ProvidersForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabelCloseMouseClicked
 
     private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
+        int index = jTable1.getSelectedRow();
+        TableModel model = jTable1.getModel();
+        String nom = model.getValueAt(index, 0).toString();
+        String pré = model.getValueAt(index, 1).toString();
+        String phone = model.getValueAt(index, 2).toString();
+        String adr = model.getValueAt(index, 3).toString();
+        String fax = model.getValueAt(index, 4).toString();
+        
+        getProviderId(nom, pré, phone);
+        
         UpdateProviderForm up = new UpdateProviderForm();
-        up.show();
-        // TODO add your handling code here:
+        up.setVisible(true);
+        up.pack();
+        up.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        
+        up.firstName.setText(nom);
+        up.lastName.setText(pré);
+        up.phone.setText(phone);
+        up.adress.setText(adr);
+        up.fax1.setText(fax);
+        up.id.setText(Integer.toString(providerId));
     }//GEN-LAST:event_updateActionPerformed
 
+    private void getProviderId(String nom, String pré, String phone) throws HeadlessException {
+        ResultSet rs = null;
+        try(
+                Connection con = DbInfo.conDB();
+                ) {
+            // get the id of selected row
+            String sql = "SELECT * FROM `providers` WHERE firstName=? and lastName=? and phone=?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            
+            ps.setString(1, nom);
+            ps.setString(2, pré);
+            ps.setString(3, phone);
+            rs = ps.executeQuery();
+            while(rs.next()){
+                providerId = rs.getInt(1);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e);
+        }
+    }
+
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
-        // TODO add your handling code here:
+        int index = jTable1.getSelectedRow();
+        TableModel model = jTable1.getModel();
+        String nom = model.getValueAt(index, 0).toString();
+        String pré = model.getValueAt(index, 1).toString();
+        String phone = model.getValueAt(index, 2).toString();
+        
+        getProviderId(nom, pré, phone);
+        
+        try (
+                Connection con = DbInfo.conDB();
+            ){
+                String sql = "DELETE FROM `providers` WHERE id=?";
+                PreparedStatement ps = con.prepareStatement(sql);
+                ps.setInt(1, providerId);
+                ps.executeUpdate();
+                
+                MsgForm mf = new MsgForm("delete");
+                mf.show();
+                
+                DefaultTableModel model1 = (DefaultTableModel)jTable1.getModel();
+                model1.setRowCount(0);
+                readProviders();
+                
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, e);
+            }
     }//GEN-LAST:event_deleteActionPerformed
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed

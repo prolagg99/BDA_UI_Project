@@ -1,5 +1,9 @@
-
+import java.sql.Connection;
 import java.awt.Color;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 
@@ -18,6 +22,7 @@ public class AddUserForm extends javax.swing.JFrame {
     /**
      * Creates new form AddUserForm
      */
+    private static int userId;
     public AddUserForm() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -417,15 +422,61 @@ public class AddUserForm extends javax.swing.JFrame {
             phone.setBorder(BorderFactory.createLineBorder(Color.red));
             tél.setText("le numéro de téléphone est requis");
         }else{
+            try (
+                Connection conn = DbInfo.conDB();
+                ){
+                conn.setAutoCommit(false);
+                String type = jComboBox1.getSelectedItem().toString();
+                String sql = "INSERT INTO `users`( `userName`, `firstName`, `lastName`, `phone`, `service`, `role`)"
+                            + "VALUES (?,?,?,?,?,?)";
+                PreparedStatement ps = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+                
+                ps.setString(1, user.getText());
+                ps.setString(2, firstName.getText());
+                ps.setString(3, lastName.getText());
+                ps.setString(4, phone.getText());
+                ps.setString(5, service.getText());
+                ps.setString(6, jComboBox1.getSelectedItem().toString());
+                ps.executeUpdate();
+                conn.commit();
+                
+                ResultSet rs = ps.getGeneratedKeys();
+                if (rs.next()) {
+                    userId = rs.getInt(1);
+                }
+                
+                if(jComboBox1.getSelectedItem().toString() == "Employé"){
+                    System.gc();
+                    java.awt.Window win[] = java.awt.Window.getWindows(); 
+                    for(int i=0;i<win.length;i++){ 
+                        win[i].dispose(); 
+                        win[i]=null;
+                    } 
+                    UsersForm uf = new UsersForm();
+                    uf.setVisible(true);
+                    uf.pack();
+                    uf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    MsgForm mf = new MsgForm("add");
+                    mf.show();
+
+                }else if( jComboBox1.getSelectedItem().toString() == "Ingénieur" ){
+                    PasswordForm pf = new PasswordForm("add");
+                    pf.setVisible(true);
+                    pf.id.setText(Integer.toString(userId));
+                }
+                
+            } catch (Exception e) {
+            }
+//                String type = jComboBox1.getSelectedItem().toString();
             // need the DB to insert the data and display the message
-            String type = String.valueOf(jComboBox1.getSelectedItem());
-            if( type == "Employé"){
-                MsgForm mgf = new MsgForm("add");
-                mgf.show();
-            }else if( type == "Ingénieur"){
-                PasswordForm pf = new PasswordForm("add");
-                pf.setVisible(true);
-            }   
+//            String type = String.valueOf(jComboBox1.getSelectedItem());
+//            if( type == "Employé"){
+//                MsgForm mgf = new MsgForm("add");
+//                mgf.show();
+//            }else if( type == "Ingénieur"){
+//                PasswordForm pf = new PasswordForm("add");
+//                pf.setVisible(true);
+//            }   
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

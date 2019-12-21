@@ -1,7 +1,9 @@
 
+import java.awt.HeadlessException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -23,6 +25,7 @@ public class ClientsForm extends javax.swing.JFrame {
     /**
      * Creates new form ClientsForm
      */
+    private static int clientId;
     public ClientsForm() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -301,6 +304,8 @@ public class ClientsForm extends javax.swing.JFrame {
         String phone = model.getValueAt(index, 2).toString();
         String adr = model.getValueAt(index, 3).toString();
         
+        getClientId(nom, pré, phone);
+        
         UpdateClientsForm uc = new UpdateClientsForm();
         uc.setVisible(true);
         uc.pack();
@@ -310,13 +315,58 @@ public class ClientsForm extends javax.swing.JFrame {
         uc.lastName.setText(pré);
         uc.phone.setText(phone);
         uc.adress.setText(adr);
-//        int row = jTable1.getSelectedRow();
-//        String id = jTable1.getModel().getValueAt(row, 0).toString();
-//        uc.id.setText(Integer.toString(row));
+        uc.id.setText(Integer.toString(clientId));
+        
     }//GEN-LAST:event_updateActionPerformed
 
+    private void getClientId(String nom, String pré, String phone) throws HeadlessException {
+        ResultSet rs = null;
+        try(
+                Connection con = DbInfo.conDB();
+                ) {
+            // get the id of selected row
+            String sql = "SELECT * FROM `clients` WHERE firstName=? and lastName=? and phone=?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            
+            ps.setString(1, nom);
+            ps.setString(2, pré);
+            ps.setString(3, phone);
+            rs = ps.executeQuery();
+            while(rs.next()){
+                clientId = rs.getInt(1);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e);
+        }
+    }
+
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
-        // TODO add your handling code here:
+        int index = jTable1.getSelectedRow();
+        TableModel model = jTable1.getModel();
+        String nom = model.getValueAt(index, 0).toString();
+        String pré = model.getValueAt(index, 1).toString();
+        String phone = model.getValueAt(index, 2).toString();
+        
+        getClientId(nom, pré, phone);
+        
+        try (
+                Connection con = DbInfo.conDB();
+            ){
+                String sql = "DELETE FROM `clients` WHERE id=?";
+                PreparedStatement ps = con.prepareStatement(sql);
+                ps.setInt(1, clientId);
+                ps.executeUpdate();
+                
+                MsgForm mf = new MsgForm("delete");
+                mf.show();
+                
+                DefaultTableModel model1 = (DefaultTableModel)jTable1.getModel();
+                model1.setRowCount(0);
+                readClients();
+                
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, e);
+            }
     }//GEN-LAST:event_deleteActionPerformed
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
@@ -392,7 +442,7 @@ public class ClientsForm extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
+    public javax.swing.JTable jTable1;
     private javax.swing.JButton update;
     // End of variables declaration//GEN-END:variables
 }
