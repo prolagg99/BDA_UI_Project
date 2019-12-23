@@ -381,7 +381,7 @@ public class MenuForm extends javax.swing.JFrame {
     }//GEN-LAST:event_clientsActionPerformed
 
     private void productsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productsActionPerformed
-        ProductsForm pF = new ProductsForm( this );
+        ProductsForm pF = new ProductsForm("Menu");
         pF.setVisible(true);
         setVisible(false);
         dispose();

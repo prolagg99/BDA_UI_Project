@@ -25,7 +25,8 @@ public class ProductsForm extends javax.swing.JFrame {
     /**
      * Creates new form ProductsForm
      */
-    public static int productId;
+    private static String form;
+    private static int productId;
     private static JFrame mainForm;
     public ProductsForm(JFrame form) {
         initComponents();
@@ -33,12 +34,19 @@ public class ProductsForm extends javax.swing.JFrame {
         mainForm = form;
         readProducts();
     }
-    public ProductsForm() {
+    public ProductsForm(String sp) {
+        initComponents();
+        this.setLocationRelativeTo(null);
+        readProducts();
+        form = sp;
+    }
+     public ProductsForm() {
         initComponents();
         this.setLocationRelativeTo(null);
         readProducts();
     }
-    
+    SellsForm ofRowData = new SellsForm();
+
     ResultSet rs = null;
     private void readProducts(){
         DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
@@ -208,6 +216,11 @@ public class ProductsForm extends javax.swing.JFrame {
         jTable1.setSelectionBackground(new java.awt.Color(248, 148, 6));
         jTable1.setShowVerticalLines(false);
         jTable1.getTableHeader().setReorderingAllowed(false);
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(jTable1);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -324,9 +337,18 @@ public class ProductsForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabelMinMouseClicked
 
     private void jLabelCloseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelCloseMouseClicked
-        mainForm.setVisible(true);
-        setVisible(false);
-        dispose();
+        if(form == "Menu"){
+            MenuForm mf = new MenuForm();
+            mf.setVisible(true);
+            setVisible(false);
+            dispose();
+        }
+        if(form == "selectProduct"){
+            SellsForm mf = new SellsForm();
+            mf.setVisible(true);
+            setVisible(false);
+            dispose();
+        }
     }//GEN-LAST:event_jLabelCloseMouseClicked
 
     private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
@@ -353,17 +375,16 @@ public class ProductsForm extends javax.swing.JFrame {
     }//GEN-LAST:event_updateActionPerformed
 
     private void getProductId(String codeB, String désign) throws HeadlessException {
-        ResultSet rs = null;
         try(
                 Connection con = DbInfo.conDB();
-                ) {
+            ) {
             // get the id of selected row
             String sql = "SELECT * FROM `sproducts` WHERE codeBare=? and désign=?";
             PreparedStatement ps = con.prepareStatement(sql);
             
             ps.setString(1, codeB);
             ps.setString(2, désign);
-            rs = ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
             while(rs.next()){
                 productId = rs.getInt(1);
             }
@@ -401,9 +422,18 @@ public class ProductsForm extends javax.swing.JFrame {
     }//GEN-LAST:event_deleteActionPerformed
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
-        mainForm.setVisible(true);
-        setVisible(false);
-        dispose();
+        if(form == "Menu"){
+            MenuForm mf = new MenuForm();
+            mf.setVisible(true);
+            setVisible(false);
+            dispose();
+        }
+        if(form == "selectProduct"){
+            SellsForm mf = new SellsForm();
+            mf.setVisible(true);
+            setVisible(false);
+            dispose();
+        }
 
 //        this.hide();
 //        MenuForm mf = new MenuForm();
@@ -420,6 +450,29 @@ public class ProductsForm extends javax.swing.JFrame {
     private void back1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_back1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_back1ActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        if(form == "selectProduct"){
+            int index = jTable1.getSelectedRow();
+            TableModel model = jTable1.getModel();
+            String cd = model.getValueAt(index, 0).toString();
+            String désig = model.getValueAt(index, 1).toString();
+            String qnt = model.getValueAt(index, 2).toString();
+            String prix = model.getValueAt(index, 3).toString();
+            
+
+            ofRowData.setVisible(true);
+            ofRowData.pack();
+            ofRowData.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+            ofRowData.codeBare.setText(cd);
+            ofRowData.désign.setText(désig);
+            ofRowData.qntStock.setText(qnt);
+            ofRowData.prixV.setText(prix);
+            
+            this.setVisible(false);
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
 
     /**
      * @param args the command line arguments

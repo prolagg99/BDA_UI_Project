@@ -3,6 +3,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -19,10 +21,15 @@ public class AddClientsForm extends javax.swing.JFrame {
     /**
      * Creates new form AddClientsForm
      */
-    public AddClientsForm() {
+    private static String nameOfFrame;
+    public AddClientsForm(String n) {
         initComponents();
         this.setLocationRelativeTo(null);
-
+        nameOfFrame = n;
+    }
+     public AddClientsForm() {
+        initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -380,13 +387,21 @@ public class AddClientsForm extends javax.swing.JFrame {
                         win[i].dispose(); 
                         win[i]=null;
                     } 
-                    ClientsForm cf = new ClientsForm();
-                    cf.setVisible(true);
-                    cf.pack();
-                    cf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    if(nameOfFrame == "clients"){
+                        ClientsForm cf = new ClientsForm();
+                        cf.setVisible(true);
+                        cf.pack();
+                        cf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    }else if (nameOfFrame == "sells"){
+                        SellsForm sf = new SellsForm();
+                        sf.setVisible(true);
+                        sf.pack();
+                        sf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    }
+                    
                     MsgForm mf = new MsgForm("add");
                     mf.show();
-                
+                    
             }catch (Exception e) {
                 JOptionPane.showMessageDialog(this, e);
             }
@@ -481,7 +496,7 @@ public class AddClientsForm extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AddClientsForm().setVisible(true);
+                new AddClientsForm(nameOfFrame).setVisible(true);
             }
         });
     }

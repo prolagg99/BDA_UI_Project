@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -466,17 +467,8 @@ public class AddUserForm extends javax.swing.JFrame {
                 }
                 
             } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e);
             }
-//                String type = jComboBox1.getSelectedItem().toString();
-            // need the DB to insert the data and display the message
-//            String type = String.valueOf(jComboBox1.getSelectedItem());
-//            if( type == "Employé"){
-//                MsgForm mgf = new MsgForm("add");
-//                mgf.show();
-//            }else if( type == "Ingénieur"){
-//                PasswordForm pf = new PasswordForm("add");
-//                pf.setVisible(true);
-//            }   
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

@@ -19,6 +19,14 @@ public class MsgForm extends javax.swing.JFrame {
      * Creates new form MsgForm
      */
     private static String txt;
+    private static int in;
+    public MsgForm(int i){
+        initComponents();
+        this.setLocationRelativeTo(null);
+        in = i;
+        
+        jLabel1.setText(String.valueOf(in));
+    }
     public MsgForm(String txt) {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -38,9 +46,12 @@ public class MsgForm extends javax.swing.JFrame {
         }
         if(txt == "loginF"){
             jLabel1.setText("erreur! veuillez réessayer");
-        }if(txt == "DB"){
-            jLabel1.setText("check the DB");
         }
+        if(txt == "no products"){
+            jLabel1.setText("Le produit n'est plus en stock");
+        }
+        
+        
 
         jLabel1.setHorizontalAlignment(JLabel.CENTER);
     }

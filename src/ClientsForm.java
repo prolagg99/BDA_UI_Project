@@ -335,6 +335,7 @@ public class ClientsForm extends javax.swing.JFrame {
             while(rs.next()){
                 clientId = rs.getInt(1);
             }
+            rs.close();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e);
         }
@@ -377,7 +378,7 @@ public class ClientsForm extends javax.swing.JFrame {
     }//GEN-LAST:event_backActionPerformed
 
     private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
-        AddClientsForm ac = new AddClientsForm();
+        AddClientsForm ac = new AddClientsForm("clients");
         ac.show();
         // TODO add your handling code here:
     }//GEN-LAST:event_addActionPerformed
