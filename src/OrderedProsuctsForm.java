@@ -2,9 +2,11 @@
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -21,17 +23,25 @@ public class OrderedProsuctsForm extends javax.swing.JFrame {
     /**
      * Creates new form OrderedProsuctsForm
      */
-    private static JFrame mainForm;
-    public OrderedProsuctsForm(JFrame form) {
+
+    private static String form;
+    private static int oProId;
+    public OrderedProsuctsForm() {
         initComponents();
         this.setLocationRelativeTo(null);
-        mainForm = form;
         readOrderdProducts();
-        
     }
+    public OrderedProsuctsForm(String txt) {
+        initComponents();
+        this.setLocationRelativeTo(null);
+        form = txt;
+        readOrderdProducts();
+    }
+    
     ResultSet rs = null;
-    private void readOrderdProducts(){
-        DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+    public void readOrderdProducts(){
+        DefaultTableModel model = (DefaultTableModel)jTable2.getModel();
+        model.setNumRows(0);
         try (
             Connection con = DbInfo.conDB();
             ){
@@ -40,7 +50,7 @@ public class OrderedProsuctsForm extends javax.swing.JFrame {
                 
                 rs = ps.executeQuery();
                 while(rs.next()){
-                    Object O[] = {rs.getString(2), rs.getString(3), rs.getString(4),rs.getString(5)};
+                    Object O[] = {rs.getString(2), rs.getString(3), rs.getInt(4),rs.getInt(5)};
                     model.addRow(O);
                 }
                 rs.close();
@@ -49,6 +59,7 @@ public class OrderedProsuctsForm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, e);
         }
     }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -67,7 +78,7 @@ public class OrderedProsuctsForm extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTable2 = new javax.swing.JTable();
         back1 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
@@ -132,7 +143,7 @@ public class OrderedProsuctsForm extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("LISTE DES PRODUITS COMMANDÉ");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -140,13 +151,18 @@ public class OrderedProsuctsForm extends javax.swing.JFrame {
                 "Code_bare", "Désignation", "Quantité", "Prix_d'achat"
             }
         ));
-        jTable1.setFocusable(false);
-        jTable1.setIntercellSpacing(new java.awt.Dimension(0, 0));
-        jTable1.setRowHeight(25);
-        jTable1.setSelectionBackground(new java.awt.Color(248, 148, 6));
-        jTable1.setShowVerticalLines(false);
-        jTable1.getTableHeader().setReorderingAllowed(false);
-        jScrollPane2.setViewportView(jTable1);
+        jTable2.setFocusable(false);
+        jTable2.setIntercellSpacing(new java.awt.Dimension(0, 0));
+        jTable2.setRowHeight(25);
+        jTable2.setSelectionBackground(new java.awt.Color(248, 148, 6));
+        jTable2.setShowVerticalLines(false);
+        jTable2.getTableHeader().setReorderingAllowed(false);
+        jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable2MouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(jTable2);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -310,7 +326,7 @@ public class OrderedProsuctsForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
-        if(jTable1.getSelectionModel().isSelectionEmpty()){
+        if(jTable2.getSelectionModel().isSelectionEmpty()){
                 MsgForm mf = new MsgForm("noRowSelected");
                 mf.setVisible(true);
         }else{
@@ -320,18 +336,88 @@ public class OrderedProsuctsForm extends javax.swing.JFrame {
     }//GEN-LAST:event_updateActionPerformed
 
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
-        if(jTable1.getSelectionModel().isSelectionEmpty()){
-                MsgForm mf = new MsgForm("noRowSelected");
-                mf.setVisible(true);
-        }else{
+//        if(jTable2.getSelectionModel().isSelectionEmpty()){
+//                MsgForm mf = new MsgForm("noRowSelected");
+//                mf.setVisible(true);
+//        }else{
+//        int index = jTable2.getSelectedRow();
+//        TableModel model = jTable2.getModel();
+//        String nom = model.getValueAt(index, 0).toString();
+//        String pré = model.getValueAt(index, 1).toString();
+//        String phone = model.getValueAt(index, 2).toString();
+//        
+//        
+//        
+//        try (
+//                Connection con = DbInfo.conDB();
+//            ){
+//                String sql = "DELETE FROM `clients` WHERE id=?";
+//                PreparedStatement ps = con.prepareStatement(sql);
+//                ps.setInt(1, clientId);
+//                ps.executeUpdate();
+//                
+//                MsgForm mf = new MsgForm("delete");
+//                mf.show();
+//                
+//                DefaultTableModel model1 = (DefaultTableModel)jTable2.getModel();
+//                model1.setRowCount(0);
+//                readOrderdProducts();
+//                
+//            } catch (SQLException e) {
+//                JOptionPane.showMessageDialog(this, e);
+//            }
+//        }
+        TableModel model = jTable2.getModel();
+        int indexs[] = jTable2.getSelectedRows();
+        
+        try (
+                Connection con = DbInfo.conDB();
+            ){
+            String sql = "SELECT * FROM `oproducts` WHERE `codeBare`=? AND `désign`=? ";
+            String sql1 = "DELETE FROM `oproducts` WHERE id=?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            PreparedStatement ps1 = con.prepareStatement(sql1);
+             for(int i=0; i < indexs.length; i++){
+                  
+                ps.setString(1, model.getValueAt(indexs[i], 0).toString());
+                ps.setString(2, model.getValueAt(indexs[i], 1).toString());
+                rs = ps.executeQuery();
+                while(rs.next()){
+                    oProId = rs.getInt(1);
+                }
+                rs.close();
+                ps1.setInt(1, oProId);
+                ps1.executeUpdate();
+                rs=null;
+            }
+            MsgForm mf = new MsgForm("delete");
+            mf.setVisible(true);
+            readOrderdProducts();
             
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e);
         }
+       
+        
     }//GEN-LAST:event_deleteActionPerformed
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
-        mainForm.setVisible(true);
-        setVisible(false);
-        dispose();
+         if(form == "menuForm"){
+            MenuForm mf = new MenuForm();
+            mf.setVisible(true);
+            setVisible(false);
+            dispose();  
+        }else if(form == "orderForm"){
+            OrderForm of = new OrderForm();
+            of.setVisible(true);
+            setVisible(false);
+            dispose(); 
+        }else if(form == "oldOrder"){
+            OldOrdersForm oo = new OldOrdersForm();
+            oo.setVisible(true);
+            setVisible(false);
+            dispose(); 
+        }
     }//GEN-LAST:event_backActionPerformed
 
     private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
@@ -350,10 +436,43 @@ public class OrderedProsuctsForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabelMinMouseClicked
 
     private void jLabelCloseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelCloseMouseClicked
-        mainForm.setVisible(true);
-        setVisible(false);
-        dispose();
+       if(form == "menuForm"){
+            MenuForm mf = new MenuForm();
+            mf.setVisible(true);
+            setVisible(false);
+            dispose();  
+        }else if(form == "orderForm"){
+            OrderForm of = new OrderForm();
+            of.setVisible(true);
+            setVisible(false);
+            dispose(); 
+        }else if(form == "oldOrder"){
+            OldOrdersForm oo = new OldOrdersForm();
+            oo.setVisible(true);
+            setVisible(false);
+            dispose(); 
+        }
     }//GEN-LAST:event_jLabelCloseMouseClicked
+
+    private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
+        if ( form == "OldOrder"){
+        DefaultTableModel model = (DefaultTableModel)jTable2.getModel();
+        int index = jTable2.getSelectedRow();
+        String cd = model.getValueAt(index, 0).toString();
+        String désign = model.getValueAt(index, 1).toString();
+        String prix =  model.getValueAt(index, 3).toString();
+        
+        OrderForm ofRowData = new OrderForm();
+        ofRowData.setVisible(true);
+        ofRowData.pack();
+        ofRowData.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            
+        ofRowData.codeBare.setText(model.getValueAt(index, 0).toString());
+        ofRowData.désign.setText(model.getValueAt(index, 1).toString());
+        ofRowData.prix.setText(model.getValueAt(index, 3).toString());
+        this.setVisible(false);
+        }
+    }//GEN-LAST:event_jTable2MouseClicked
 
     /**
      * @param args the command line arguments
@@ -385,7 +504,7 @@ public class OrderedProsuctsForm extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new OrderedProsuctsForm(mainForm).setVisible(true);
+                new OrderedProsuctsForm().setVisible(true);
             }
         });
     }
@@ -405,7 +524,7 @@ public class OrderedProsuctsForm extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
+    public javax.swing.JTable jTable2;
     private javax.swing.JButton update;
     // End of variables declaration//GEN-END:variables
 }

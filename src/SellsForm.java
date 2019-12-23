@@ -69,7 +69,7 @@ public class SellsForm extends javax.swing.JFrame {
             ){
             String sql = "SELECT * FROM `clients`";
             PreparedStatement ps = con.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
+            rs = ps.executeQuery();
             
             while(rs.next()){
                 String name = rs.getString(2) + " " + rs.getString(3);
@@ -572,68 +572,111 @@ public class SellsForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabelCloseMouseClicked
 
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
-    
+//        try (
+//            Connection con = DbInfo.conDB();
+//        ){
+//            TableModel model1 = jTable1.getModel();
+//            int indexs[] = jTable1.getSelectedRows();
+//            if(indexs.length != 0){
+//                for(int i =0; i < indexs.length; i++){
+//                    String codeB = model1.getValueAt(indexs[i], 1).toString();
+//                    String désign = model1.getValueAt(indexs[i], 2).toString(); 
+//                    qntVante =  Integer.parseInt(model1.getValueAt(indexs[i], 4).toString());
+//                    String sql = "SELECT * FROM `sales` WHERE codeBare=? AND désign=?";
+//                    String sql1 = "DELETE FROM `sales` WHERE id=?";
+//                    PreparedStatement ps = con.prepareStatement(sql);
+//                    
+//                    ps.setString(1, codeB);
+//                    ps.setString(2, désign);
+//                    rs = ps.executeQuery();
+//                    while(rs.next()){
+//                        saleId = rs.getInt(1);
+//                    }
+//                    rs.close();
+//
+//                    ps = con.prepareStatement(sql1);
+//                    ps.setInt(1, saleId);
+//                    ps.executeUpdate();
+//                    
+//                    String sql3="SELECT * FROM `sproducts` WHERE `désign`=? AND `codeBare`=?";
+//                    ps = con.prepareStatement(sql3);
+//                    ps.setString(1, désign);
+//                    ps.setString(2, codeB);
+//                    rs = ps.executeQuery();
+//                    while(rs.next()){
+//                        qntBD = rs.getInt(4);
+//                    }
+//                    rs.close();
+//                    rs=null;
+//                    sql=null;
+//                    sql1=null;
+//                    String sql4="UPDATE `sproducts` SET `quantité`=? WHERE `désign`=? AND `codeBare`=?";
+//                    ps = con.prepareStatement(sql4);
+//                    ps.setInt(1, qntBD + qntVante);
+//                    ps.setString(2, désign);
+//                    ps.setString(3, codeB);
+//                    ps.executeUpdate();
+//                }
+//                MsgForm mf1 = new MsgForm("delete");
+//                mf1.show();
+//
+//                DefaultTableModel model2 = (DefaultTableModel)jTable1.getModel();
+//                model2.setRowCount(0);
+//                readSells();
+//            }
+//        } catch (Exception e) {
+//        JOptionPane.showMessageDialog(this, e);
+//        }
+        TableModel model = jTable1.getModel();
+        int indexs[] = jTable1.getSelectedRows();
+        
         try (
             Connection con = DbInfo.conDB();
-        ){
-            TableModel model1 = jTable1.getModel();
-            int indexs[] = jTable1.getSelectedRows();
-            if(indexs.length != 0){
-                for(int i =0; i < indexs.length; i++){
-                    String codeB = model1.getValueAt(indexs[i], 1).toString();
-                    String désign = model1.getValueAt(indexs[i], 2).toString(); 
-                    qntVante =  Integer.parseInt(model1.getValueAt(indexs[i], 4).toString());
-                    String sql = "SELECT * FROM `sales` WHERE codeBare=? AND désign=?";
-                    String sql1 = "DELETE FROM `sales` WHERE id=?";
-                    PreparedStatement ps = con.prepareStatement(sql);
-//                    PreparedStatement ps1 = con.prepareStatement(sql1);
-
-                    ps.setString(1, codeB);
-                    ps.setString(2, désign);
-                    rs = ps.executeQuery();
-                    while(rs.next()){
-                        saleId = rs.getInt(1);
-                    }
-                    rs.close();
-
-                    ps = con.prepareStatement(sql1);
-                    ps.setInt(1, saleId);
-                    ps.executeUpdate();
-
-                    
-                    
-                    String sql3="SELECT * FROM `sproducts` WHERE `désign`=? AND `codeBare`=?";
-                    ps = con.prepareStatement(sql3);
-                    ps.setString(1, désign);
-                    ps.setString(2, codeB);
-                    rs = ps.executeQuery();
-                    while(rs.next()){
-                        qntBD = rs.getInt(4);
-                    }
-                    rs.close();
-                    rs=null;
-                    sql=null;
-                    sql1=null;
-                    String sql4="UPDATE `sproducts` SET `quantité`=? WHERE `désign`=? AND `codeBare`=?";
-                    ps = con.prepareStatement(sql4);
-                    ps.setInt(1, qntBD + qntVante);
-                    ps.setString(2, désign);
-                    ps.setString(3, codeB);
-                    ps.executeUpdate();
-//                    
-                    
-                    
+            ){
+            String sql = "SELECT * FROM `sales` WHERE `date`=? AND `codeBare`=? AND `désign`=? AND `client`=?";
+            String sql1 = "DELETE FROM `sales` WHERE id=?";
+            String sql2="SELECT * FROM `sproducts` WHERE `désign`=? AND `codeBare`=?";
+            String sql3="UPDATE `sproducts` SET `quantité`=? WHERE `désign`=? AND `codeBare`=?";
+            
+            PreparedStatement ps = con.prepareStatement(sql);
+            PreparedStatement ps1 = con.prepareStatement(sql1);
+            PreparedStatement ps2 = con.prepareStatement(sql2);
+            PreparedStatement ps3 = con.prepareStatement(sql3);
+            for(int i=0; i < indexs.length; i++){
+                  
+                ps.setString(1, model.getValueAt(indexs[i], 0).toString());
+                ps.setString(2, model.getValueAt(indexs[i], 1).toString());
+                ps.setString(3, model.getValueAt(indexs[i], 2).toString());
+                ps.setString(4, model.getValueAt(indexs[i], 5).toString());
+                rs = ps.executeQuery();
+                while(rs.next()){
+                    saleId = rs.getInt(1);
                 }
-                MsgForm mf1 = new MsgForm("delete");
-                mf1.show();
-
-                DefaultTableModel model2 = (DefaultTableModel)jTable1.getModel();
-                model2.setRowCount(0);
-                readSells();
+                rs.close();
+                ps1.setInt(1, saleId);
+                ps1.executeUpdate();
+                rs=null;
+                
+                ps2.setString(1, model.getValueAt(indexs[i], 2).toString());
+                ps2.setString(2, model.getValueAt(indexs[i], 1).toString());
+                rs = ps2.executeQuery();
+                while(rs.next()){
+                    qntBD = rs.getInt(4);
+                }
+                rs.close();
+                
+                ps3.setInt(1, qntBD + Integer.parseInt(model.getValueAt(indexs[i], 4).toString()));
+                ps3.setString(2, model.getValueAt(indexs[i], 2).toString());
+                ps3.setString(3, model.getValueAt(indexs[i], 1).toString());
+                ps3.executeUpdate();
             }
+            MsgForm mf = new MsgForm("delete");
+            mf.setVisible(true);
+            readSells();
+            
         } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, e);
-        }   
+             JOptionPane.showMessageDialog(this, e);
+        }
     }//GEN-LAST:event_deleteActionPerformed
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
@@ -740,7 +783,6 @@ public class SellsForm extends javax.swing.JFrame {
     private void add3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add3ActionPerformed
         AddClientsForm ac = new AddClientsForm("sells");
         ac.show();
-        // TODO add your handling code here:
     }//GEN-LAST:event_add3ActionPerformed
 
     private void add2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add2ActionPerformed
@@ -749,10 +791,7 @@ public class SellsForm extends javax.swing.JFrame {
         pf.setVisible(true);
         pf.pack();
         pf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        
         this.setVisible(false);
-        
-        
     }//GEN-LAST:event_add2ActionPerformed
 
     private void codeBareKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codeBareKeyTyped

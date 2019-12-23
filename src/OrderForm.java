@@ -1,7 +1,11 @@
 
 import java.awt.Color;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /*
@@ -22,9 +26,48 @@ public class OrderForm extends javax.swing.JFrame {
     public OrderForm() {
         initComponents();
         this.setLocationRelativeTo(null);
-        
+        readOrderes();
+        updateComboBox();
     }
-
+    
+     ResultSet rs = null;
+    private void readOrderes(){
+        DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+        try (
+            Connection con = DbInfo.conDB();
+            ){
+                String sql = "SELECT * FROM `orders`";
+                PreparedStatement ps = con.prepareStatement(sql);
+                
+                rs = ps.executeQuery();
+                while(rs.next()){
+                    Object O[] = {rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),
+                        rs.getString(6), rs.getString(7)};
+                    model.addRow(O);
+                }
+                rs.close();
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e);
+        }
+    }
+    private void updateComboBox(){
+        try (
+                Connection con = DbInfo.conDB();
+            ){
+            String sql = "SELECT * FROM `providers`";
+            PreparedStatement ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            
+            while(rs.next()){
+                String name = rs.getString(2) + " " + rs.getString(3);
+                jComboBox1.addItem(name);
+            }
+            rs.close();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e);
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -313,8 +356,6 @@ public class OrderForm extends javax.swing.JFrame {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         add2.setBackground(new java.awt.Color(238, 232, 213));
         add2.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         add2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/box.png"))); // NOI18N
@@ -403,6 +444,7 @@ public class OrderForm extends javax.swing.JFrame {
                         .addGap(21, 21, 21)))
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(prix, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -410,22 +452,21 @@ public class OrderForm extends javax.swing.JFrame {
                             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(codeBare, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(5, 5, 5)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel9)
                                 .addComponent(désign, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(qnt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel7))
-                        .addContainerGap())
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel7)
+                            .addComponent(date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(15, 15, 15)
-                        .addComponent(add, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(52, Short.MAX_VALUE))))
+                        .addComponent(add, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         jPanel3.setBackground(new java.awt.Color(44, 62, 80));
@@ -501,21 +542,35 @@ public class OrderForm extends javax.swing.JFrame {
         if(qnt.getText().trim().isEmpty()){
             qnt.setBorder(BorderFactory.createLineBorder(Color.red));
         }else{
-            
-       
-        
-        DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
-        model.addRow(new Object[]{date.getText(), codeBare.getText(), désign.getText(),
-        prix.getText(), qnt.getText(), jComboBox1.getSelectedItem()});
+            try (
+                Connection con = DbInfo.conDB();
+                ){
+                con.setAutoCommit(false);
+                String sql="INSERT INTO `orders`(`date`, `codeBare`, `désign`, `prix`, `qunatité`, `fournisseur`) "
+                        + "VALUES (?,?,?,?,?,?)";
+                PreparedStatement ps = con.prepareStatement(sql);
+                ps.setString(1, date.getText());
+                ps.setString(2, codeBare.getText());
+                ps.setString(3, désign.getText());
+                ps.setString(4, prix.getText());
+                ps.setString(5, qnt.getText());
+                ps.setString(6, jComboBox1.getSelectedItem().toString());
+                ps.executeUpdate();
+                con.commit();
+                
+                DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+                model.setRowCount(0);
+                readOrderes();
+                
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e);
             }
-       
+        }
     }//GEN-LAST:event_addActionPerformed
 
     private void add1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add1ActionPerformed
-       // need the DB to get all values of the table and add it to the DB
-        MsgForm mf = new MsgForm("add");
-        mf.show();
-        // need the DB to send all information exist in data base to anciant commande
+        OldOrdersForm oo = new OldOrdersForm(this);
+        oo.setVisible(true);
     }//GEN-LAST:event_add1ActionPerformed
 
     private void codeBareActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_codeBareActionPerformed
@@ -540,34 +595,27 @@ public class OrderForm extends javax.swing.JFrame {
 
     private void add3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add3ActionPerformed
         AddProviderForm ap = new AddProviderForm();
-        ap.show();
-        // TODO add your handling code here:
+        ap.setVisible(true);
     }//GEN-LAST:event_add3ActionPerformed
 
     private void codeBareKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codeBareKeyReleased
         codeBare.setBorder(BorderFactory.createLineBorder(Color.green));
-        
-        // TODO add your handling code here:
     }//GEN-LAST:event_codeBareKeyReleased
 
     private void désignKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_désignKeyReleased
         désign.setBorder(BorderFactory.createLineBorder(Color.green));
-        // TODO add your handling code here:
     }//GEN-LAST:event_désignKeyReleased
 
     private void dateKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dateKeyReleased
         date.setBorder(BorderFactory.createLineBorder(Color.green));
-        // TODO add your handling code here:
     }//GEN-LAST:event_dateKeyReleased
 
     private void prixKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_prixKeyReleased
         prix.setBorder(BorderFactory.createLineBorder(Color.green));
-        // TODO add your handling code here:
     }//GEN-LAST:event_prixKeyReleased
 
     private void qntKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_qntKeyReleased
         qnt.setBorder(BorderFactory.createLineBorder(Color.green));
-        // TODO add your handling code here:
     }//GEN-LAST:event_qntKeyReleased
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
@@ -596,9 +644,11 @@ public class OrderForm extends javax.swing.JFrame {
     }//GEN-LAST:event_qntKeyTyped
 
     private void add2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add2ActionPerformed
-        OrderedProsuctsForm opf = new OrderedProsuctsForm(this);
-        opf.show();
-        this.hide();
+        OrderedProsuctsForm opf = new OrderedProsuctsForm("orderForm");
+        opf.setVisible(true);
+        opf.pack();
+        opf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.setVisible(false);
     }//GEN-LAST:event_add2ActionPerformed
 
     /**
@@ -642,10 +692,10 @@ public class OrderForm extends javax.swing.JFrame {
     private javax.swing.JButton add2;
     private javax.swing.JButton add3;
     private javax.swing.JButton back;
-    private javax.swing.JTextField codeBare;
+    public javax.swing.JTextField codeBare;
     private javax.swing.JTextField date;
     private javax.swing.JButton delete;
-    private javax.swing.JTextField désign;
+    public javax.swing.JTextField désign;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -664,7 +714,7 @@ public class OrderForm extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField prix;
+    public javax.swing.JTextField prix;
     private javax.swing.JTextField qnt;
     // End of variables declaration//GEN-END:variables
 }

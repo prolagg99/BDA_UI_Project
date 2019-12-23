@@ -484,7 +484,7 @@ public class MenuForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
     private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
-       OrderedProsuctsForm opf = new OrderedProsuctsForm(this);
+       OrderedProsuctsForm opf = new OrderedProsuctsForm("menuForm");
        opf.show();
        this.hide();
     }//GEN-LAST:event_jMenuItem12ActionPerformed
@@ -496,12 +496,12 @@ public class MenuForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem5MouseClicked
 
     private void jMenuItem12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem12MouseClicked
-        OrderedProsuctsForm op = new OrderedProsuctsForm(this);
+        OrderedProsuctsForm op = new OrderedProsuctsForm("menuForm");
         op.setVisible(true);
     }//GEN-LAST:event_jMenuItem12MouseClicked
 
     private void jMenuItem9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem9MouseClicked
-       OldOrdersForm oo = new OldOrdersForm();
+       OldOrdersForm oo = new OldOrdersForm(this);
        oo.setVisible(true);
     }//GEN-LAST:event_jMenuItem9MouseClicked
 

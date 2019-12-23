@@ -225,6 +225,9 @@ public class SalesJournalForm extends javax.swing.JFrame {
             }
         });
         jTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextFieldKeyPressed(evt);
+            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 jTextFieldKeyReleased(evt);
             }
@@ -411,6 +414,10 @@ public class SalesJournalForm extends javax.swing.JFrame {
         readSells();
         totalDA.setText(total.toString());
     }//GEN-LAST:event_back2ActionPerformed
+
+    private void jTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldKeyPressed
 
     /**
      * @param args the command line arguments

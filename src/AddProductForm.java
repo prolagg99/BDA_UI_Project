@@ -366,31 +366,58 @@ public class AddProductForm extends javax.swing.JFrame {
                 Connection conn = DbInfo.conDB();
                 ){
                     conn.setAutoCommit(false);
-                    String sql = "INSERT INTO `sproducts`(`codeBare`, `désign`, `quantité`, `prix`)"
+                    if(txt == "products"){
+                        String sql = "INSERT INTO `sproducts`(`codeBare`, `désign`, `quantité`, `prix`)"
                             + "VALUES (?,?,?,?)";
-                    PreparedStatement ps = conn.prepareStatement(sql);
-                    
-                    ps.setString(1, codeBare.getText());
-                    ps.setString(2, désign.getText());
-                    ps.setString(3, qnt.getText());
-                    ps.setString(4, prixVent.getText());
+                        PreparedStatement ps = conn.prepareStatement(sql);
+                        ps.setString(1, codeBare.getText());
+                        ps.setString(2, désign.getText());
+                        ps.setString(3, qnt.getText());
+                        ps.setString(4, prixVent.getText());
 
-                    ps.executeUpdate();
-                    conn.commit();
+                        ps.executeUpdate();
+                        conn.commit();
+                         // to close all the previous jframe 
+                        System.gc();
+                        java.awt.Window win[] = java.awt.Window.getWindows(); 
+                        for(int i=0;i<win.length;i++){ 
+                            win[i].dispose(); 
+                            win[i]=null;
+                        } 
+                        ProductsForm pf = new ProductsForm();
+                        pf.setVisible(true);
+                        pf.pack();
+                        pf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                        MsgForm mf = new MsgForm("add");
+                        mf.show();
+                    }else if(txt == "ordredProducts"){
+                        String sql = "INSERT INTO `oproducts`(`codeBare`, `désign`, `quantité`, `prix`)"
+                            + "VALUES (?,?,?,?)";
+                        PreparedStatement ps = conn.prepareStatement(sql);
+                        ps.setString(1, codeBare.getText());
+                        ps.setString(2, désign.getText());
+                        ps.setString(3, qnt.getText());
+                        ps.setString(4, prixVent.getText());
+
+                        ps.executeUpdate();
+                        conn.commit();
+                         // to close all the previous jframe 
+                        System.gc();
+                        java.awt.Window win[] = java.awt.Window.getWindows(); 
+                        for(int i=0;i<win.length;i++){ 
+                            win[i].dispose(); 
+                            win[i]=null;
+                        } 
+                        OrderedProsuctsForm pf = new OrderedProsuctsForm();
+                        pf.setVisible(true);
+                        pf.pack();
+                        pf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                        MsgForm mf = new MsgForm("add");
+                        mf.show();
+                    }
                     
-                    // to close all the previous jframe 
-                    System.gc();
-                    java.awt.Window win[] = java.awt.Window.getWindows(); 
-                    for(int i=0;i<win.length;i++){ 
-                        win[i].dispose(); 
-                        win[i]=null;
-                    } 
-                    ProductsForm pf = new ProductsForm();
-                    pf.setVisible(true);
-                    pf.pack();
-                    pf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                    MsgForm mf = new MsgForm("add");
-                    mf.show();
+                   
+                    
                 
             }catch (Exception e) {
                 JOptionPane.showMessageDialog(this, e);
