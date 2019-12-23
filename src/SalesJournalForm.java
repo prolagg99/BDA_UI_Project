@@ -24,11 +24,20 @@ public class SalesJournalForm extends javax.swing.JFrame {
     /**
      * Creates new form SalesJournalForm
      */
+    private static JFrame mainForm;
     private static Double total; 
     private static String entré; 
     public SalesJournalForm() {
         initComponents();
         this.setLocationRelativeTo(null);
+        totalDA.setEditable(false);
+        readSells();
+        totalDA.setText(total.toString());
+    }
+    public SalesJournalForm(JFrame form) {
+        initComponents();
+        this.setLocationRelativeTo(null);
+        mainForm = form;
         totalDA.setEditable(false);
         readSells();
         totalDA.setText(total.toString());
@@ -340,16 +349,15 @@ public class SalesJournalForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabelMinMouseClicked
 
     private void jLabelCloseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelCloseMouseClicked
-        this.hide();
-        MenuForm mf = new MenuForm();
-        mf.show();
+        mainForm.setVisible(true);
+        setVisible(false);
+        dispose();
     }//GEN-LAST:event_jLabelCloseMouseClicked
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
-        this.hide();
-        SellsForm sf = new SellsForm();
-        sf.show();
-        // TODO add your handling code here:
+        mainForm.setVisible(true);
+        setVisible(false);
+        dispose();
     }//GEN-LAST:event_backActionPerformed
 
     private void totalDAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_totalDAActionPerformed

@@ -28,7 +28,7 @@ public class PasswordForm extends javax.swing.JFrame {
     public PasswordForm(String txt) {
         initComponents();
         this.setLocationRelativeTo(null);
-        id.setVisible(true);
+        id.setVisible(false);
         
         this.txt = txt;
         if(txt == "login"){

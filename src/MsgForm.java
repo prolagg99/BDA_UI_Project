@@ -50,9 +50,14 @@ public class MsgForm extends javax.swing.JFrame {
         if(txt == "no products"){
             jLabel1.setText("Le produit n'est plus en stock");
         }
+        if(txt == "insuffisants"){
+            jLabel1.setText("Les produits stockés sont insuffisants");
+        }
+        if(txt == "noRowSelected"){
+            jLabel1.setText("Sélectionner un ligne!");
+        }
         
         
-
         jLabel1.setHorizontalAlignment(JLabel.CENTER);
     }
 

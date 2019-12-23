@@ -482,7 +482,6 @@ public class OrderForm extends javax.swing.JFrame {
         this.hide();
         MenuForm mf = new MenuForm();
         mf.show();
-        // TODO add your handling code here:
     }//GEN-LAST:event_backActionPerformed
 
     private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed

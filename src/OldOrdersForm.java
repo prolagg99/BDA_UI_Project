@@ -283,9 +283,9 @@ public class OldOrdersForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabelMinMouseClicked
 
     private void jLabelCloseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelCloseMouseClicked
-        this.hide();
         MenuForm mf = new MenuForm();
-        mf.show();
+        mf.setVisible(true);
+        dispose();
     }//GEN-LAST:event_jLabelCloseMouseClicked
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
@@ -299,7 +299,9 @@ public class OldOrdersForm extends javax.swing.JFrame {
     }//GEN-LAST:event_back1ActionPerformed
 
     private void back2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_back2ActionPerformed
-        // TODO add your handling code here:
+        MenuForm mf = new MenuForm();
+        mf.setVisible(true);
+        dispose();
     }//GEN-LAST:event_back2ActionPerformed
 
     /**

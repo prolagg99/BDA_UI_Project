@@ -39,6 +39,11 @@ public class ProductsForm extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         readProducts();
         form = sp;
+        if(form == "selectProduct"){
+            update.setVisible(false);
+            delete.setVisible(false);
+            add.setVisible(false);
+        }
     }
      public ProductsForm() {
         initComponents();
@@ -90,7 +95,7 @@ public class ProductsForm extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        back1 = new javax.swing.JButton();
+        print = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -244,14 +249,14 @@ public class ProductsForm extends javax.swing.JFrame {
                 .addGap(19, 19, 19))
         );
 
-        back1.setBackground(new java.awt.Color(238, 232, 213));
-        back1.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        back1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/printer.png"))); // NOI18N
-        back1.setText("Imprimer");
-        back1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        back1.addActionListener(new java.awt.event.ActionListener() {
+        print.setBackground(new java.awt.Color(238, 232, 213));
+        print.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        print.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/printer.png"))); // NOI18N
+        print.setText("Imprimer");
+        print.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        print.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                back1ActionPerformed(evt);
+                printActionPerformed(evt);
             }
         });
 
@@ -271,7 +276,7 @@ public class ProductsForm extends javax.swing.JFrame {
                             .addComponent(delete, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(back, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(add, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(back1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(print, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(20, 20, 20))
         );
         jPanel4Layout.setVerticalGroup(
@@ -290,7 +295,7 @@ public class ProductsForm extends javax.swing.JFrame {
                         .addGap(10, 10, 10)
                         .addComponent(delete, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(back1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(print, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(back, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(93, 93, 93))
@@ -352,26 +357,31 @@ public class ProductsForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabelCloseMouseClicked
 
     private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
-        int index = jTable1.getSelectedRow();
-        TableModel model = jTable1.getModel();
-        String codeB = model.getValueAt(index, 0).toString();
-        String désign = model.getValueAt(index, 1).toString();
-        String qnt = model.getValueAt(index, 2).toString();
-        String prix = model.getValueAt(index, 3).toString();
-        
-        
-        getProductId(codeB, désign);
-        
-        UpdateProductForm up = new UpdateProductForm();
-        up.setVisible(true);
-        up.pack();
-        up.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        
-        up.codeBare.setText(codeB);
-        up.désign.setText(désign);
-        up.qnt.setText(qnt);
-        up.prixVent.setText(prix);
-        up.id.setText(Integer.toString(productId));
+        if(jTable1.getSelectionModel().isSelectionEmpty()){
+                MsgForm mf = new MsgForm("noRowSelected");
+                mf.setVisible(true);
+        }else{
+            int index = jTable1.getSelectedRow();
+            TableModel model = jTable1.getModel();
+            String codeB = model.getValueAt(index, 0).toString();
+            String désign = model.getValueAt(index, 1).toString();
+            String qnt = model.getValueAt(index, 2).toString();
+            String prix = model.getValueAt(index, 3).toString();
+
+
+            getProductId(codeB, désign);
+
+            UpdateProductForm up = new UpdateProductForm();
+            up.setVisible(true);
+            up.pack();
+            up.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+            up.codeBare.setText(codeB);
+            up.désign.setText(désign);
+            up.qnt.setText(qnt);
+            up.prixVent.setText(prix);
+            up.id.setText(Integer.toString(productId));
+        }
     }//GEN-LAST:event_updateActionPerformed
 
     private void getProductId(String codeB, String désign) throws HeadlessException {
@@ -394,31 +404,36 @@ public class ProductsForm extends javax.swing.JFrame {
     }
 
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
-        int index = jTable1.getSelectedRow();
-        TableModel model = jTable1.getModel();
-        String codeB = model.getValueAt(index, 0).toString();
-        String désign = model.getValueAt(index, 1).toString();
-        
-        getProductId(codeB, désign);
-        
-        try (
-                Connection con = DbInfo.conDB();
-            ){
-                String sql = "DELETE FROM `sproducts` WHERE id=?";
-                PreparedStatement ps = con.prepareStatement(sql);
-                ps.setInt(1, productId);
-                ps.executeUpdate();
-                
-                MsgForm mf = new MsgForm("delete");
-                mf.show();
-                
-                DefaultTableModel model1 = (DefaultTableModel)jTable1.getModel();
-                model1.setRowCount(0);
-                readProducts();
-                
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(this, e);
-            }
+        if(jTable1.getSelectionModel().isSelectionEmpty()){
+                MsgForm mf = new MsgForm("noRowSelected");
+                mf.setVisible(true);
+        }else{
+            int index = jTable1.getSelectedRow();
+            TableModel model = jTable1.getModel();
+            String codeB = model.getValueAt(index, 0).toString();
+            String désign = model.getValueAt(index, 1).toString();
+
+            getProductId(codeB, désign);
+
+            try (
+                    Connection con = DbInfo.conDB();
+                ){
+                    String sql = "DELETE FROM `sproducts` WHERE id=?";
+                    PreparedStatement ps = con.prepareStatement(sql);
+                    ps.setInt(1, productId);
+                    ps.executeUpdate();
+
+                    MsgForm mf = new MsgForm("delete");
+                    mf.show();
+
+                    DefaultTableModel model1 = (DefaultTableModel)jTable1.getModel();
+                    model1.setRowCount(0);
+                    readProducts();
+
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(this, e);
+                }
+        }
     }//GEN-LAST:event_deleteActionPerformed
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
@@ -447,9 +462,9 @@ public class ProductsForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_addActionPerformed
 
-    private void back1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_back1ActionPerformed
+    private void printActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_back1ActionPerformed
+    }//GEN-LAST:event_printActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         if(form == "selectProduct"){
@@ -469,7 +484,10 @@ public class ProductsForm extends javax.swing.JFrame {
             ofRowData.désign.setText(désig);
             ofRowData.qntStock.setText(qnt);
             ofRowData.prixV.setText(prix);
-            
+             if( Integer.parseInt(qnt) == 0){
+                MsgForm mf = new MsgForm("no products");
+                mf.setVisible(true);
+            }
             this.setVisible(false);
         }
     }//GEN-LAST:event_jTable1MouseClicked
@@ -512,7 +530,6 @@ public class ProductsForm extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton add;
     private javax.swing.JButton back;
-    private javax.swing.JButton back1;
     private javax.swing.JButton delete;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -525,6 +542,7 @@ public class ProductsForm extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
+    private javax.swing.JButton print;
     private javax.swing.JButton update;
     // End of variables declaration//GEN-END:variables
 }

@@ -151,7 +151,7 @@
                               <Component id="delete" alignment="0" min="-2" pref="120" max="-2" attributes="0"/>
                               <Component id="back" alignment="0" min="-2" pref="120" max="-2" attributes="0"/>
                               <Component id="add" alignment="0" min="-2" pref="120" max="-2" attributes="0"/>
-                              <Component id="back1" min="-2" pref="120" max="-2" attributes="0"/>
+                              <Component id="print" min="-2" pref="120" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -175,7 +175,7 @@
                           <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
                           <Component id="delete" min="-2" pref="40" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="back1" min="-2" pref="40" max="-2" attributes="0"/>
+                          <Component id="print" min="-2" pref="40" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="back" min="-2" pref="40" max="-2" attributes="0"/>
                       </Group>
@@ -355,7 +355,7 @@
             </Container>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JButton" name="back1">
+        <Component class="javax.swing.JButton" name="print">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="d5" green="e8" red="ee" type="rgb"/>
@@ -372,7 +372,7 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="back1ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="printActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

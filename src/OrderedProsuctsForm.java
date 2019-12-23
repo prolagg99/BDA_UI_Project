@@ -310,13 +310,22 @@ public class OrderedProsuctsForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
-        UpdateProductForm up = new UpdateProductForm();
-        up.show();
-        // TODO add your handling code here:
+        if(jTable1.getSelectionModel().isSelectionEmpty()){
+                MsgForm mf = new MsgForm("noRowSelected");
+                mf.setVisible(true);
+        }else{
+            UpdateProductForm up = new UpdateProductForm();
+            up.show();
+        }
     }//GEN-LAST:event_updateActionPerformed
 
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
-        // TODO add your handling code here:
+        if(jTable1.getSelectionModel().isSelectionEmpty()){
+                MsgForm mf = new MsgForm("noRowSelected");
+                mf.setVisible(true);
+        }else{
+            
+        }
     }//GEN-LAST:event_deleteActionPerformed
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed

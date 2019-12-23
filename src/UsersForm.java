@@ -327,74 +327,83 @@ public class UsersForm extends javax.swing.JFrame {
     }//GEN-LAST:event_addActionPerformed
 
     private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
-        int index = jTable1.getSelectedRow();
-        TableModel model = jTable1.getModel();
-        String un = model.getValueAt(index, 0).toString();
-        String nom = model.getValueAt(index, 1).toString();
-        String pré = model.getValueAt(index, 2).toString();
-        String phone = model.getValueAt(index, 3).toString();
-        String service = model.getValueAt(index, 4).toString();
-        String type = model.getValueAt(index, 5).toString();
-       
-        try (
-                Connection con = DbInfo.conDB();
-            ){
-                String sql = "SELECT * FROM `users` WHERE userName=? and role=?";
-                PreparedStatement ps = con.prepareStatement(sql);
+        if(jTable1.getSelectionModel().isSelectionEmpty()){
+                MsgForm mf = new MsgForm("noRowSelected");
+                mf.setVisible(true);
+        }else{
+            int index = jTable1.getSelectedRow();
+            TableModel model = jTable1.getModel();
+            String un = model.getValueAt(index, 0).toString();
+            String nom = model.getValueAt(index, 1).toString();
+            String pré = model.getValueAt(index, 2).toString();
+            String phone = model.getValueAt(index, 3).toString();
+            String service = model.getValueAt(index, 4).toString();
+            String type = model.getValueAt(index, 5).toString();
 
-                ps.setString(1, un);
-                ps.setString(2, type);
-                ResultSet rs = ps.executeQuery();
-                while(rs.next()){
-                    userId = rs.getInt(1);
-                    password = rs.getString(3);
-                }
-        }catch (Exception e) {
-        JOptionPane.showMessageDialog(this, e);
+            try (
+                    Connection con = DbInfo.conDB();
+                ){
+                    String sql = "SELECT * FROM `users` WHERE userName=? and role=?";
+                    PreparedStatement ps = con.prepareStatement(sql);
+
+                    ps.setString(1, un);
+                    ps.setString(2, type);
+                    ResultSet rs = ps.executeQuery();
+                    while(rs.next()){
+                        userId = rs.getInt(1);
+                        password = rs.getString(3);
+                    }
+            }catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e);
+            }
+
+                UpdateUserForm uu = new UpdateUserForm();
+                uu.setVisible(true);
+                uu.pack();
+                uu.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+                uu.user.setText(un);
+                uu.firstName.setText(nom);
+                uu.lastName.setText(pré);
+                uu.phone1.setText(phone);
+                uu.service.setText(service);
+                uu.jComboBox1.setSelectedItem(type);
+                uu.id.setText(Integer.toString(userId));
         }
-        
-            UpdateUserForm uu = new UpdateUserForm();
-            uu.setVisible(true);
-            uu.pack();
-            uu.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            
-            uu.user.setText(un);
-            uu.firstName.setText(nom);
-            uu.lastName.setText(pré);
-            uu.phone1.setText(phone);
-            uu.service.setText(service);
-            uu.jComboBox1.setSelectedItem(type);
-            uu.id.setText(Integer.toString(userId));
-
     }//GEN-LAST:event_updateActionPerformed
 
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
-        int index = jTable1.getSelectedRow();
-        TableModel model = jTable1.getModel();
-        String nom = model.getValueAt(index, 1).toString();
-        String pré = model.getValueAt(index, 2).toString();
-        String phone = model.getValueAt(index, 3).toString();
-        
-        getUserId(nom, pré, phone);
-        
-        try (
-                Connection con = DbInfo.conDB();
-            ){
-                String sql = "DELETE FROM `users` WHERE id=?";
-                PreparedStatement ps = con.prepareStatement(sql);
-                ps.setInt(1, userId);
-                ps.executeUpdate();
-                
-                MsgForm mf = new MsgForm("delete");
-                mf.show();
-                
-                DefaultTableModel model1 = (DefaultTableModel)jTable1.getModel();
-                model1.setRowCount(0);
-                readUsers();
-                
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(this, e);
-            }      
+        if(jTable1.getSelectionModel().isSelectionEmpty()){
+                MsgForm mf = new MsgForm("noRowSelected");
+                mf.setVisible(true);
+        }else{
+            int index = jTable1.getSelectedRow();
+            TableModel model = jTable1.getModel();
+            String nom = model.getValueAt(index, 1).toString();
+            String pré = model.getValueAt(index, 2).toString();
+            String phone = model.getValueAt(index, 3).toString();
+
+            getUserId(nom, pré, phone);
+
+            try (
+                    Connection con = DbInfo.conDB();
+                ){
+                    String sql = "DELETE FROM `users` WHERE id=?";
+                    PreparedStatement ps = con.prepareStatement(sql);
+                    ps.setInt(1, userId);
+                    ps.executeUpdate();
+
+                    MsgForm mf = new MsgForm("delete");
+                    mf.show();
+
+                    DefaultTableModel model1 = (DefaultTableModel)jTable1.getModel();
+                    model1.setRowCount(0);
+                    readUsers();
+
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(this, e);
+                }   
+        }
     }//GEN-LAST:event_deleteActionPerformed
 
     private void getUserId(String nom, String pré, String phone) throws HeadlessException {

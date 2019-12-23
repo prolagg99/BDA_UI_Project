@@ -297,6 +297,10 @@ public class ClientsForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
+        if(jTable1.getSelectionModel().isSelectionEmpty()){
+                MsgForm mf = new MsgForm("noRowSelected");
+                mf.setVisible(true);
+        }else{
         int index = jTable1.getSelectedRow();
         TableModel model = jTable1.getModel();
         String nom = model.getValueAt(index, 0).toString();
@@ -316,7 +320,7 @@ public class ClientsForm extends javax.swing.JFrame {
         uc.phone.setText(phone);
         uc.adress.setText(adr);
         uc.id.setText(Integer.toString(clientId));
-        
+        }
     }//GEN-LAST:event_updateActionPerformed
 
     private void getClientId(String nom, String pré, String phone) throws HeadlessException {
@@ -342,6 +346,10 @@ public class ClientsForm extends javax.swing.JFrame {
     }
 
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
+        if(jTable1.getSelectionModel().isSelectionEmpty()){
+                MsgForm mf = new MsgForm("noRowSelected");
+                mf.setVisible(true);
+        }else{
         int index = jTable1.getSelectedRow();
         TableModel model = jTable1.getModel();
         String nom = model.getValueAt(index, 0).toString();
@@ -368,6 +376,7 @@ public class ClientsForm extends javax.swing.JFrame {
             } catch (SQLException e) {
                 JOptionPane.showMessageDialog(this, e);
             }
+        }
     }//GEN-LAST:event_deleteActionPerformed
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed

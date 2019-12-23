@@ -274,9 +274,19 @@ public class MenuForm extends javax.swing.JFrame {
         jMenu2.setText("Listes");
 
         jMenuItem1.setText("liste des produits");
+        jMenuItem1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenuItem1MouseClicked(evt);
+            }
+        });
         jMenu2.add(jMenuItem1);
 
         jMenuItem2.setText("liste des utilisateurs");
+        jMenuItem2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenuItem2MouseClicked(evt);
+            }
+        });
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem2ActionPerformed(evt);
@@ -285,9 +295,19 @@ public class MenuForm extends javax.swing.JFrame {
         jMenu2.add(jMenuItem2);
 
         jMenuItem3.setText("liste des fournisserus");
+        jMenuItem3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenuItem3MouseClicked(evt);
+            }
+        });
         jMenu2.add(jMenuItem3);
 
         jMenuItem4.setText("liste des clients");
+        jMenuItem4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenuItem4MouseClicked(evt);
+            }
+        });
         jMenu2.add(jMenuItem4);
 
         jMenuBar1.add(jMenu2);
@@ -297,10 +317,20 @@ public class MenuForm extends javax.swing.JFrame {
 
         jMenuItem5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/plus3.png"))); // NOI18N
         jMenuItem5.setText("Nouvelle Commande");
+        jMenuItem5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenuItem5MouseClicked(evt);
+            }
+        });
         jMenu1.add(jMenuItem5);
 
         jMenuItem9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/book.png"))); // NOI18N
         jMenuItem9.setText("Anciennes Commande");
+        jMenuItem9.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenuItem9MouseClicked(evt);
+            }
+        });
         jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem9ActionPerformed(evt);
@@ -310,6 +340,11 @@ public class MenuForm extends javax.swing.JFrame {
 
         jMenuItem12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/box.png"))); // NOI18N
         jMenuItem12.setText("Produit Commandé");
+        jMenuItem12.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenuItem12MouseClicked(evt);
+            }
+        });
         jMenuItem12.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem12ActionPerformed(evt);
@@ -324,6 +359,11 @@ public class MenuForm extends javax.swing.JFrame {
 
         jMenuItem6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/update2.png"))); // NOI18N
         jMenuItem6.setText("Point de vente");
+        jMenuItem6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenuItem6MouseClicked(evt);
+            }
+        });
         jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem6ActionPerformed(evt);
@@ -333,6 +373,11 @@ public class MenuForm extends javax.swing.JFrame {
 
         jMenuItem11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/book.png"))); // NOI18N
         jMenuItem11.setText("Journal de vente");
+        jMenuItem11.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenuItem11MouseClicked(evt);
+            }
+        });
         jMenu3.add(jMenuItem11);
 
         jMenuBar1.add(jMenu3);
@@ -365,7 +410,9 @@ public class MenuForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabelCloseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelCloseMouseClicked
-        System.exit(0);
+        this.hide();
+        LoginForm lf = new LoginForm();
+        lf.setVisible(true);
     }//GEN-LAST:event_jLabelCloseMouseClicked
 
     private void jLabelMinMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelMinMouseClicked
@@ -407,7 +454,6 @@ public class MenuForm extends javax.swing.JFrame {
         OrderForm of = new OrderForm();
         of.show();
         this.hide();
-        // TODO add your handling code here:
     }//GEN-LAST:event_requestActionPerformed
 
     private void products7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_products7ActionPerformed
@@ -442,6 +488,54 @@ public class MenuForm extends javax.swing.JFrame {
        opf.show();
        this.hide();
     }//GEN-LAST:event_jMenuItem12ActionPerformed
+
+    private void jMenuItem5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem5MouseClicked
+        OrderForm of = new OrderForm();
+        of.show();
+        this.hide();
+    }//GEN-LAST:event_jMenuItem5MouseClicked
+
+    private void jMenuItem12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem12MouseClicked
+        OrderedProsuctsForm op = new OrderedProsuctsForm(this);
+        op.setVisible(true);
+    }//GEN-LAST:event_jMenuItem12MouseClicked
+
+    private void jMenuItem9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem9MouseClicked
+       OldOrdersForm oo = new OldOrdersForm();
+       oo.setVisible(true);
+    }//GEN-LAST:event_jMenuItem9MouseClicked
+
+    private void jMenuItem6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem6MouseClicked
+        SellsForm sf = new SellsForm();
+        sf.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jMenuItem6MouseClicked
+
+    private void jMenuItem11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem11MouseClicked
+        SalesJournalForm sj = new SalesJournalForm(this);
+        sj.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jMenuItem11MouseClicked
+
+    private void jMenuItem1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem1MouseClicked
+        ProductsForm pf = new ProductsForm();
+        pf.setVisible(true);
+    }//GEN-LAST:event_jMenuItem1MouseClicked
+
+    private void jMenuItem2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem2MouseClicked
+        UsersForm uf = new UsersForm();
+        uf.setVisible(true);
+    }//GEN-LAST:event_jMenuItem2MouseClicked
+
+    private void jMenuItem3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem3MouseClicked
+       ProvidersForm pf = new ProvidersForm();
+       pf.setVisible(true);
+    }//GEN-LAST:event_jMenuItem3MouseClicked
+
+    private void jMenuItem4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem4MouseClicked
+        ClientsForm cf = new ClientsForm();
+        cf.setVisible(true);
+    }//GEN-LAST:event_jMenuItem4MouseClicked
 
     /**
      * @param args the command line arguments

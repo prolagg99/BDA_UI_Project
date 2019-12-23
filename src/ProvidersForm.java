@@ -322,27 +322,32 @@ public class ProvidersForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabelCloseMouseClicked
 
     private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
-        int index = jTable1.getSelectedRow();
-        TableModel model = jTable1.getModel();
-        String nom = model.getValueAt(index, 0).toString();
-        String pré = model.getValueAt(index, 1).toString();
-        String phone = model.getValueAt(index, 2).toString();
-        String adr = model.getValueAt(index, 3).toString();
-        String fax = model.getValueAt(index, 4).toString();
-        
-        getProviderId(nom, pré, phone);
-        
-        UpdateProviderForm up = new UpdateProviderForm();
-        up.setVisible(true);
-        up.pack();
-        up.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        
-        up.firstName.setText(nom);
-        up.lastName.setText(pré);
-        up.phone.setText(phone);
-        up.adress.setText(adr);
-        up.fax1.setText(fax);
-        up.id.setText(Integer.toString(providerId));
+        if(jTable1.getSelectionModel().isSelectionEmpty()){
+                MsgForm mf = new MsgForm("noRowSelected");
+                mf.setVisible(true);
+            }else{
+            int index = jTable1.getSelectedRow();
+            TableModel model = jTable1.getModel();
+            String nom = model.getValueAt(index, 0).toString();
+            String pré = model.getValueAt(index, 1).toString();
+            String phone = model.getValueAt(index, 2).toString();
+            String adr = model.getValueAt(index, 3).toString();
+            String fax = model.getValueAt(index, 4).toString();
+
+            getProviderId(nom, pré, phone);
+
+            UpdateProviderForm up = new UpdateProviderForm();
+            up.setVisible(true);
+            up.pack();
+            up.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+            up.firstName.setText(nom);
+            up.lastName.setText(pré);
+            up.phone.setText(phone);
+            up.adress.setText(adr);
+            up.fax1.setText(fax);
+            up.id.setText(Integer.toString(providerId));
+        }
     }//GEN-LAST:event_updateActionPerformed
 
     private void getProviderId(String nom, String pré, String phone) throws HeadlessException {
@@ -367,32 +372,37 @@ public class ProvidersForm extends javax.swing.JFrame {
     }
 
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
-        int index = jTable1.getSelectedRow();
-        TableModel model = jTable1.getModel();
-        String nom = model.getValueAt(index, 0).toString();
-        String pré = model.getValueAt(index, 1).toString();
-        String phone = model.getValueAt(index, 2).toString();
-        
-        getProviderId(nom, pré, phone);
-        
-        try (
-                Connection con = DbInfo.conDB();
-            ){
-                String sql = "DELETE FROM `providers` WHERE id=?";
-                PreparedStatement ps = con.prepareStatement(sql);
-                ps.setInt(1, providerId);
-                ps.executeUpdate();
-                
-                MsgForm mf = new MsgForm("delete");
-                mf.show();
-                
-                DefaultTableModel model1 = (DefaultTableModel)jTable1.getModel();
-                model1.setRowCount(0);
-                readProviders();
-                
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(this, e);
-            }
+        if(jTable1.getSelectionModel().isSelectionEmpty()){
+                MsgForm mf = new MsgForm("noRowSelected");
+                mf.setVisible(true);
+        }else{
+            int index = jTable1.getSelectedRow();
+            TableModel model = jTable1.getModel();
+            String nom = model.getValueAt(index, 0).toString();
+            String pré = model.getValueAt(index, 1).toString();
+            String phone = model.getValueAt(index, 2).toString();
+
+            getProviderId(nom, pré, phone);
+
+            try (
+                    Connection con = DbInfo.conDB();
+                ){
+                    String sql = "DELETE FROM `providers` WHERE id=?";
+                    PreparedStatement ps = con.prepareStatement(sql);
+                    ps.setInt(1, providerId);
+                    ps.executeUpdate();
+
+                    MsgForm mf = new MsgForm("delete");
+                    mf.show();
+
+                    DefaultTableModel model1 = (DefaultTableModel)jTable1.getModel();
+                    model1.setRowCount(0);
+                    readProviders();
+
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(this, e);
+                }
+        }
     }//GEN-LAST:event_deleteActionPerformed
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
