@@ -55,6 +55,7 @@ public class ProductsForm extends javax.swing.JFrame {
     ResultSet rs = null;
     private void readProducts(){
         DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+        model.setRowCount(0);
         try (
             Connection con = DbInfo.conDB();
             ){
@@ -404,36 +405,41 @@ public class ProductsForm extends javax.swing.JFrame {
     }
 
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
-        if(jTable1.getSelectionModel().isSelectionEmpty()){
-                MsgForm mf = new MsgForm("noRowSelected");
-                mf.setVisible(true);
-        }else{
-            int index = jTable1.getSelectedRow();
-            TableModel model = jTable1.getModel();
-            String codeB = model.getValueAt(index, 0).toString();
-            String désign = model.getValueAt(index, 1).toString();
-
-            getProductId(codeB, désign);
-
-            try (
-                    Connection con = DbInfo.conDB();
-                ){
-                    String sql = "DELETE FROM `sproducts` WHERE id=?";
-                    PreparedStatement ps = con.prepareStatement(sql);
-                    ps.setInt(1, productId);
-                    ps.executeUpdate();
-
-                    MsgForm mf = new MsgForm("delete");
-                    mf.show();
-
-                    DefaultTableModel model1 = (DefaultTableModel)jTable1.getModel();
-                    model1.setRowCount(0);
-                    readProducts();
-
-                } catch (SQLException e) {
-                    JOptionPane.showMessageDialog(this, e);
+         if (jTable1.getSelectionModel().isSelectionEmpty()) {
+            MsgForm mf = new MsgForm("noRowSelected");
+            mf.setVisible(true);
+        } else {
+        TableModel model = jTable1.getModel();
+        int indexs[] = jTable1.getSelectedRows();
+        
+        try (
+                Connection con = DbInfo.conDB();
+            ){
+            String sql = "SELECT * FROM `sproducts` WHERE `codeBare`=? AND `désign`=? ";
+            String sql1 = "DELETE FROM `sproducts` WHERE id=?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            PreparedStatement ps1 = con.prepareStatement(sql1);
+             for(int i=0; i < indexs.length; i++){
+                  
+                ps.setString(1, model.getValueAt(indexs[i], 0).toString());
+                ps.setString(2, model.getValueAt(indexs[i], 1).toString());
+                rs = ps.executeQuery();
+                while(rs.next()){
+                    productId = rs.getInt(1);
                 }
+                rs.close();
+                ps1.setInt(1, productId);
+                ps1.executeUpdate();
+                rs=null;
+            }
+            MsgForm mf = new MsgForm("delete");
+            mf.setVisible(true);
+            readProducts();
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e);
         }
+    }
     }//GEN-LAST:event_deleteActionPerformed
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
@@ -449,11 +455,6 @@ public class ProductsForm extends javax.swing.JFrame {
             setVisible(false);
             dispose();
         }
-
-//        this.hide();
-//        MenuForm mf = new MenuForm();
-//        mf.show();
-        
     }//GEN-LAST:event_backActionPerformed
 
     private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed

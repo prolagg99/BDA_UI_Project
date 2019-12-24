@@ -25,7 +25,7 @@ public class SalesJournalForm extends javax.swing.JFrame {
      * Creates new form SalesJournalForm
      */
     private static JFrame mainForm;
-    private static Double total; 
+    private static Double total,montant; 
     private static String entré; 
     public SalesJournalForm() {
         initComponents();
@@ -56,10 +56,11 @@ public class SalesJournalForm extends javax.swing.JFrame {
             total = 0.0;
             rs = ps.executeQuery();
             while(rs.next()){
+                montant =  Double.valueOf(rs.getString(5)) * Double.valueOf(rs.getString(6));
                 Object O[] = {rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),
-                        rs.getString(6)};
+                        rs.getString(6), montant};
                 model.addRow(O);
-                total = total + Double.valueOf(rs.getString(5));
+                total = total + montant;
             }
             rs.close();
             
@@ -176,7 +177,7 @@ public class SalesJournalForm extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Date", "Code_barre", "Désignation", "Prix de vente", "Quantité"
+                "Date", "Code_barre", "Désignation", "Prix de vente", "Quantité", "Montant"
             }
         ));
         jTable2.setFocusable(false);
@@ -268,10 +269,10 @@ public class SalesJournalForm extends javax.swing.JFrame {
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(back, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(254, 254, 254)
+                        .addGap(278, 278, 278)
                         .addComponent(jLabel4)
-                        .addGap(18, 18, 18)
-                        .addComponent(totalDA, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(totalDA, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(jPanel4Layout.createSequentialGroup()
                             .addComponent(jLabel5)
@@ -300,11 +301,9 @@ public class SalesJournalForm extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(11, 11, 11)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGap(3, 3, 3)
-                                .addComponent(jLabel4))
-                            .addComponent(totalDA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(totalDA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4)))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(back, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))

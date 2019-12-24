@@ -20,11 +20,16 @@ public class AddProviderForm extends javax.swing.JFrame {
     /**
      * Creates new form AddProviderForm
      */
+    private static String nameOfFrame;
     public AddProviderForm() {
         initComponents();
         this.setLocationRelativeTo(null);
     }
-
+    public AddProviderForm(String txt) {
+        initComponents();
+        this.setLocationRelativeTo(null);
+        nameOfFrame = txt;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -417,10 +422,19 @@ public class AddProviderForm extends javax.swing.JFrame {
                         win[i].dispose(); 
                         win[i]=null;
                     } 
-                    ProvidersForm pf = new ProvidersForm();
-                    pf.setVisible(true);
-                    pf.pack();
-                    pf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    
+                    if(nameOfFrame == "providers"){
+                        ProvidersForm pf = new ProvidersForm();
+                        pf.setVisible(true);
+                        pf.pack();
+                        pf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    }else if (nameOfFrame == "orders"){
+                        OrderForm of = new OrderForm();
+                        of.setVisible(true);
+                        of.pack();
+                        of.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    }
+                    
                     MsgForm mf = new MsgForm("add");
                     mf.show();
                 

@@ -35,6 +35,7 @@ public class ClientsForm extends javax.swing.JFrame {
     ResultSet rs = null;
     private void readClients(){
         DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+        model.setRowCount(0);
         try (
             Connection con = DbInfo.conDB();
             ){
@@ -350,30 +351,35 @@ public class ClientsForm extends javax.swing.JFrame {
                 MsgForm mf = new MsgForm("noRowSelected");
                 mf.setVisible(true);
         }else{
-        int index = jTable1.getSelectedRow();
-        TableModel model = jTable1.getModel();
-        String nom = model.getValueAt(index, 0).toString();
-        String pré = model.getValueAt(index, 1).toString();
-        String phone = model.getValueAt(index, 2).toString();
-        
-        getClientId(nom, pré, phone);
-        
-        try (
+            int indexs[] = jTable1.getSelectedRows();
+            TableModel model = jTable1.getModel();
+            
+            try (
                 Connection con = DbInfo.conDB();
-            ){
-                String sql = "DELETE FROM `clients` WHERE id=?";
+                ){
+                String sql = "SELECT * FROM `clients` WHERE `firstName`=? AND `LastName`=? AND `phone`=?";
+                String sql1 = "DELETE FROM `clients` WHERE id=?";
                 PreparedStatement ps = con.prepareStatement(sql);
-                ps.setInt(1, clientId);
-                ps.executeUpdate();
+                PreparedStatement ps1 = con.prepareStatement(sql1);
                 
+                for(int i=0; i < indexs.length; i++){
+                  
+                    ps.setString(1, model.getValueAt(indexs[i], 0).toString());
+                    ps.setString(2, model.getValueAt(indexs[i], 1).toString());
+                    ps.setString(3, model.getValueAt(indexs[i], 2).toString());
+                    rs = ps.executeQuery();
+                    while(rs.next()){
+                        clientId = rs.getInt(1);
+                    }
+                    rs.close();
+                    ps1.setInt(1, clientId);
+                    ps1.executeUpdate();
+                    rs=null;
+                }
                 MsgForm mf = new MsgForm("delete");
-                mf.show();
-                
-                DefaultTableModel model1 = (DefaultTableModel)jTable1.getModel();
-                model1.setRowCount(0);
+                mf.setVisible(true);
                 readClients();
-                
-            } catch (SQLException e) {
+            } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, e);
             }
         }

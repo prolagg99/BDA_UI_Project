@@ -42,6 +42,7 @@ public class ProvidersForm extends javax.swing.JFrame {
     ResultSet rs = null;
     private void readProviders(){
         DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+        model.setRowCount(0);
         try (
             Connection con = DbInfo.conDB();
             ){
@@ -376,32 +377,37 @@ public class ProvidersForm extends javax.swing.JFrame {
                 MsgForm mf = new MsgForm("noRowSelected");
                 mf.setVisible(true);
         }else{
-            int index = jTable1.getSelectedRow();
+            int indexs[] = jTable1.getSelectedRows();
             TableModel model = jTable1.getModel();
-            String nom = model.getValueAt(index, 0).toString();
-            String pré = model.getValueAt(index, 1).toString();
-            String phone = model.getValueAt(index, 2).toString();
-
-            getProviderId(nom, pré, phone);
-
+            
             try (
-                    Connection con = DbInfo.conDB();
+                Connection con = DbInfo.conDB();
                 ){
-                    String sql = "DELETE FROM `providers` WHERE id=?";
-                    PreparedStatement ps = con.prepareStatement(sql);
-                    ps.setInt(1, providerId);
-                    ps.executeUpdate();
-
-                    MsgForm mf = new MsgForm("delete");
-                    mf.show();
-
-                    DefaultTableModel model1 = (DefaultTableModel)jTable1.getModel();
-                    model1.setRowCount(0);
-                    readProviders();
-
-                } catch (SQLException e) {
-                    JOptionPane.showMessageDialog(this, e);
+                String sql = "SELECT * FROM `providers` WHERE `firstName`=? AND `LastName`=? AND `phone`=?";
+                String sql1 = "DELETE FROM `providers` WHERE id=?";
+                PreparedStatement ps = con.prepareStatement(sql);
+                PreparedStatement ps1 = con.prepareStatement(sql1);
+                
+                for(int i=0; i < indexs.length; i++){
+                  
+                    ps.setString(1, model.getValueAt(indexs[i], 0).toString());
+                    ps.setString(2, model.getValueAt(indexs[i], 1).toString());
+                    ps.setString(3, model.getValueAt(indexs[i], 2).toString());
+                    rs = ps.executeQuery();
+                    while(rs.next()){
+                        providerId = rs.getInt(1);
+                    }
+                    rs.close();
+                    ps1.setInt(1, providerId);
+                    ps1.executeUpdate();
+                    rs=null;
                 }
+                MsgForm mf = new MsgForm("delete");
+                mf.setVisible(true);
+                readProviders();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e);
+            }
         }
     }//GEN-LAST:event_deleteActionPerformed
 
@@ -413,7 +419,7 @@ public class ProvidersForm extends javax.swing.JFrame {
     }//GEN-LAST:event_backActionPerformed
 
     private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
-        AddProviderForm ap = new AddProviderForm();
+        AddProviderForm ap = new AddProviderForm("providers");
         ap.show();
         // TODO add your handling code here:
     }//GEN-LAST:event_addActionPerformed

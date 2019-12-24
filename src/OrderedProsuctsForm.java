@@ -336,37 +336,10 @@ public class OrderedProsuctsForm extends javax.swing.JFrame {
     }//GEN-LAST:event_updateActionPerformed
 
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
-//        if(jTable2.getSelectionModel().isSelectionEmpty()){
-//                MsgForm mf = new MsgForm("noRowSelected");
-//                mf.setVisible(true);
-//        }else{
-//        int index = jTable2.getSelectedRow();
-//        TableModel model = jTable2.getModel();
-//        String nom = model.getValueAt(index, 0).toString();
-//        String pré = model.getValueAt(index, 1).toString();
-//        String phone = model.getValueAt(index, 2).toString();
-//        
-//        
-//        
-//        try (
-//                Connection con = DbInfo.conDB();
-//            ){
-//                String sql = "DELETE FROM `clients` WHERE id=?";
-//                PreparedStatement ps = con.prepareStatement(sql);
-//                ps.setInt(1, clientId);
-//                ps.executeUpdate();
-//                
-//                MsgForm mf = new MsgForm("delete");
-//                mf.show();
-//                
-//                DefaultTableModel model1 = (DefaultTableModel)jTable2.getModel();
-//                model1.setRowCount(0);
-//                readOrderdProducts();
-//                
-//            } catch (SQLException e) {
-//                JOptionPane.showMessageDialog(this, e);
-//            }
-//        }
+        if (jTable2.getSelectionModel().isSelectionEmpty()) {
+            MsgForm mf = new MsgForm("noRowSelected");
+            mf.setVisible(true);
+        } else {
         TableModel model = jTable2.getModel();
         int indexs[] = jTable2.getSelectedRows();
         
@@ -397,8 +370,7 @@ public class OrderedProsuctsForm extends javax.swing.JFrame {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e);
         }
-       
-        
+    }
     }//GEN-LAST:event_deleteActionPerformed
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
@@ -455,7 +427,7 @@ public class OrderedProsuctsForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabelCloseMouseClicked
 
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
-        if ( form == "OldOrder"){
+        if ( form == "orderForm"){
         DefaultTableModel model = (DefaultTableModel)jTable2.getModel();
         int index = jTable2.getSelectedRow();
         String cd = model.getValueAt(index, 0).toString();

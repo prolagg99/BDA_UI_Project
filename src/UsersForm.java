@@ -38,6 +38,7 @@ public class UsersForm extends javax.swing.JFrame {
     ResultSet rs = null;
     private void readUsers(){
         DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+        model.setRowCount(0);
         try (
             Connection con = DbInfo.conDB();
             ){
@@ -377,32 +378,37 @@ public class UsersForm extends javax.swing.JFrame {
                 MsgForm mf = new MsgForm("noRowSelected");
                 mf.setVisible(true);
         }else{
-            int index = jTable1.getSelectedRow();
+            int indexs[] = jTable1.getSelectedRows();
             TableModel model = jTable1.getModel();
-            String nom = model.getValueAt(index, 1).toString();
-            String pré = model.getValueAt(index, 2).toString();
-            String phone = model.getValueAt(index, 3).toString();
-
-            getUserId(nom, pré, phone);
-
+            
             try (
-                    Connection con = DbInfo.conDB();
+                Connection con = DbInfo.conDB();
                 ){
-                    String sql = "DELETE FROM `users` WHERE id=?";
-                    PreparedStatement ps = con.prepareStatement(sql);
-                    ps.setInt(1, userId);
-                    ps.executeUpdate();
-
-                    MsgForm mf = new MsgForm("delete");
-                    mf.show();
-
-                    DefaultTableModel model1 = (DefaultTableModel)jTable1.getModel();
-                    model1.setRowCount(0);
-                    readUsers();
-
-                } catch (SQLException e) {
-                    JOptionPane.showMessageDialog(this, e);
-                }   
+                String sql = "SELECT * FROM `users` WHERE `firstName`=? AND `LastName`=? AND `phone`=?";
+                String sql1 = "DELETE FROM `users` WHERE id=?";
+                PreparedStatement ps = con.prepareStatement(sql);
+                PreparedStatement ps1 = con.prepareStatement(sql1);
+                
+                for(int i=0; i < indexs.length; i++){
+                  
+                    ps.setString(1, model.getValueAt(indexs[i], 1).toString());
+                    ps.setString(2, model.getValueAt(indexs[i], 2).toString());
+                    ps.setString(3, model.getValueAt(indexs[i], 3).toString());
+                    rs = ps.executeQuery();
+                    while(rs.next()){
+                        userId = rs.getInt(1);
+                    }
+                    rs.close();
+                    ps1.setInt(1, userId);
+                    ps1.executeUpdate();
+                    rs=null;
+                }
+                MsgForm mf = new MsgForm("delete");
+                mf.setVisible(true);
+                readUsers();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e);
+            }
         }
     }//GEN-LAST:event_deleteActionPerformed
 

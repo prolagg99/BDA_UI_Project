@@ -26,6 +26,10 @@ public class OldOrdersForm extends javax.swing.JFrame {
      * Creates new form OldOrdersForm
      */
     private static JFrame mainForm;
+    private static String entré;
+    private static boolean existe = false;
+    private static int qnt;
+    private static Double total,montant; 
     public OldOrdersForm() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -40,17 +44,21 @@ public class OldOrdersForm extends javax.swing.JFrame {
     ResultSet rs = null;
     private void readOldOrders(){
         DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+        model.setRowCount(0);
        try(
             Connection con = DbInfo.conDB();
             ){
             String sql = "SELECT * FROM `orders`";
             PreparedStatement ps = con.prepareStatement(sql);
             
+            total = 0.0;
             rs = ps.executeQuery();
             while(rs.next()){
+                montant =  Double.valueOf(rs.getString(5)) * Double.valueOf(rs.getString(6));
                 Object O[] = {rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),
-                        rs.getString(6), rs.getString(7)};
+                        rs.getString(6), montant};
                 model.addRow(O);
+                total = total + montant;
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e);
@@ -163,7 +171,7 @@ public class OldOrdersForm extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Date", "Code_barre", "Désignation", "Prix de vente", "Quantité"
+                "Date", "Code_barre", "Désignation", "Prix de vente", "Quantité", "Montant"
             }
         ));
         jTable1.setFocusable(false);
@@ -172,6 +180,11 @@ public class OldOrdersForm extends javax.swing.JFrame {
         jTable1.setSelectionBackground(new java.awt.Color(248, 148, 6));
         jTable1.setShowVerticalLines(false);
         jTable1.getTableHeader().setReorderingAllowed(false);
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(jTable1);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -310,17 +323,42 @@ public class OldOrdersForm extends javax.swing.JFrame {
         try (
             Connection con = DbInfo.conDB();
             ){
+            
             con.setAutoCommit(false);
+            
             String sql = "INSERT INTO `oproducts`(`codeBare`, `désign`, `quantité`, `prix`) VALUES (?,?,?,?)";
+            String sql1 = "SELECT * FROM `oproducts` WHERE `codeBare`=? AND `désign`=?";
+            String sql2 = "UPDATE `oproducts` SET `quantité`=? WHERE `codeBare`=? AND `désign`=?";
             PreparedStatement ps = con.prepareStatement(sql);
+            PreparedStatement ps1 = con.prepareStatement(sql1);
+            PreparedStatement ps2 = con.prepareStatement(sql2);
             
             for(int i=0; i < indexs.length; i++){
-                ps.setString(1, model.getValueAt(indexs[i], 1).toString());
-                ps.setString(2, model.getValueAt(indexs[i], 2).toString());
-                ps.setString(4, model.getValueAt(indexs[i], 3).toString());
-                ps.setString(3, model.getValueAt(indexs[i], 4).toString());
-                ps.executeUpdate();
-                con.commit();
+                // to search if the product existe alor en fire une mise à jour sinon en l'ajoute 
+                String cd = model.getValueAt(indexs[i], 1).toString();
+                String désign = model.getValueAt(indexs[i], 2).toString();
+                ps1.setString(1, model.getValueAt(indexs[i], 1).toString());
+                ps1.setString(2, model.getValueAt(indexs[i], 2).toString());
+                rs = ps1.executeQuery();
+                if(rs.next()){
+//                    if(rs.getString(2) == cd && rs.getString(3) == désign){
+                        qnt = rs.getInt(4)+ Integer.valueOf(model.getValueAt(indexs[i], 4).toString());
+                        ps2.setInt(1, qnt);
+                        ps2.setString(2, cd);
+                        ps2.setString(3, désign);
+                        ps2.executeUpdate();
+//                        existe = true;
+                        con.commit();
+//                    }
+                }else{
+                    ps.setString(1, model.getValueAt(indexs[i], 1).toString());
+                    ps.setString(2, model.getValueAt(indexs[i], 2).toString());
+                    ps.setString(3, model.getValueAt(indexs[i], 4).toString());
+                    ps.setString(4, model.getValueAt(indexs[i], 3).toString());
+                    ps.executeUpdate();
+                    con.commit();
+                }
+                rs.close();
             }
             OrderedProsuctsForm op = new OrderedProsuctsForm("oldOrder");
             op.readOrderdProducts();
@@ -347,6 +385,10 @@ public class OldOrdersForm extends javax.swing.JFrame {
         jTable1.setRowSorter(tr);
         tr.setRowFilter(RowFilter.regexFilter(search));
     }//GEN-LAST:event_jTextFieldKeyReleased
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTable1MouseClicked
 
     /**
      * @param args the command line arguments
