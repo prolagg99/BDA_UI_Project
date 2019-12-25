@@ -179,7 +179,7 @@ public class PasswordForm extends javax.swing.JFrame {
             jLabel1.setText("le mot de pass est requis");
             jLabel1.setForeground(Color.red);
         }else if(txt == "login"){
-             ResultSet rs = null;
+            ResultSet rs = null;
             try (
                 Connection con = DbInfo.conDB();
             ){

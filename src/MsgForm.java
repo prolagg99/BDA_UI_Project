@@ -54,7 +54,7 @@ public class MsgForm extends javax.swing.JFrame {
             jLabel1.setText("Les produits stockés sont insuffisants");
         }
         if(txt == "noRowSelected"){
-            jLabel1.setText("Sélectionner un ligne!");
+            jLabel1.setText("Sélectionner une ligne!");
         }
         
         

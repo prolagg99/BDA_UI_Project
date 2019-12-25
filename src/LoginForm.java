@@ -327,7 +327,7 @@ public class LoginForm extends javax.swing.JFrame {
     }//GEN-LAST:event_formMouseClicked
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        System.exit(0);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
@@ -358,7 +358,9 @@ public class LoginForm extends javax.swing.JFrame {
             ){
                 String type = jComboBox1.getSelectedItem().toString();
                 String sql = "SELECT * FROM `users` WHERE role=? and userName=? and service=?";
+                String sql1 = "UPDATE `connection` SET `type`=? WHERE 1";
                 PreparedStatement ps = con.prepareStatement(sql);
+                PreparedStatement ps1 = con.prepareStatement(sql1);
 
                 ps.setString(1, jComboBox1.getSelectedItem().toString());
                 ps.setString(2, userName.getText());
@@ -372,15 +374,20 @@ public class LoginForm extends javax.swing.JFrame {
                         mf.show();
                         MsgForm mgf = new MsgForm("loginS");
                         mgf.show();
+                        ps1.setString(1, "Employé");
+                        ps1.executeUpdate();
                     }else if( type == "Ingénieur" ){
                         PasswordForm pf = new PasswordForm("login");
                         pf.setVisible(true);
+                        ps1.setString(1, "Ingénieur");
+                        ps1.executeUpdate();
                     }
                 }else{
                     MsgForm mgf = new MsgForm("loginF");
                     mgf.show();
                 }
                 rs.close();
+                
                 
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, e);
