@@ -3,6 +3,7 @@ import java.sql.Connection;
 import java.awt.Color;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Calendar;
 import static javafx.scene.paint.Color.color;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -356,9 +357,12 @@ public class LoginForm extends javax.swing.JFrame {
             try (
                 Connection con = DbInfo.conDB();
             ){
+                Calendar calendar = Calendar.getInstance();
+                java.sql.Date date = new java.sql.Date(calendar.getTime().getTime());
+                
                 String type = jComboBox1.getSelectedItem().toString();
                 String sql = "SELECT * FROM `users` WHERE role=? and userName=? and service=?";
-                String sql1 = "UPDATE `connection` SET `type`=? WHERE 1";
+                String sql1 = "INSERT INTO `connection`(`type`, `userName`, `date`, `service`) VALUES (?,?,CURRENT_TIMESTAMP,?)";
                 PreparedStatement ps = con.prepareStatement(sql);
                 PreparedStatement ps1 = con.prepareStatement(sql1);
 
@@ -374,12 +378,19 @@ public class LoginForm extends javax.swing.JFrame {
                         mf.show();
                         MsgForm mgf = new MsgForm("loginS");
                         mgf.show();
+                        
                         ps1.setString(1, "Employé");
+                        ps1.setString(2, userName.getText());
+                        ps1.setString(3, service.getText());
                         ps1.executeUpdate();
                     }else if( type == "Ingénieur" ){
                         PasswordForm pf = new PasswordForm("login");
                         pf.setVisible(true);
+                        
                         ps1.setString(1, "Ingénieur");
+                        ps1.setString(2, userName.getText());
+                        ps1.setDate(3, date);
+                        ps1.setString(4, service.getText());
                         ps1.executeUpdate();
                     }
                 }else{

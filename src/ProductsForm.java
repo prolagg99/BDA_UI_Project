@@ -46,11 +46,7 @@ public class ProductsForm extends javax.swing.JFrame {
             delete.setVisible(false);
         }
     }
-     public ProductsForm() {
-        initComponents();
-        this.setLocationRelativeTo(null);
-        readProducts();
-    }
+     
     SellsForm ofRowData = new SellsForm();
 
     ResultSet rs = null;
@@ -571,7 +567,7 @@ public class ProductsForm extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ProductsForm().setVisible(true);
+                new ProductsForm(form).setVisible(true);
             }
         });
     }

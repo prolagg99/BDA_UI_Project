@@ -59,6 +59,7 @@ public class MenuForm extends javax.swing.JFrame {
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem10 = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem9 = new javax.swing.JMenuItem();
@@ -310,7 +311,7 @@ public class MenuForm extends javax.swing.JFrame {
             }
         });
 
-        jMenuItem1.setText("liste des produits");
+        jMenuItem1.setText("Liste des produits");
         jMenuItem1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenuItem1MouseClicked(evt);
@@ -323,7 +324,7 @@ public class MenuForm extends javax.swing.JFrame {
         });
         jMenu2.add(jMenuItem1);
 
-        jMenuItem2.setText("liste des utilisateurs");
+        jMenuItem2.setText("Liste des utilisateurs");
         jMenuItem2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenuItem2MouseClicked(evt);
@@ -336,7 +337,7 @@ public class MenuForm extends javax.swing.JFrame {
         });
         jMenu2.add(jMenuItem2);
 
-        jMenuItem3.setText("liste des fournisserus");
+        jMenuItem3.setText("Liste des fournisserus");
         jMenuItem3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenuItem3MouseClicked(evt);
@@ -349,7 +350,7 @@ public class MenuForm extends javax.swing.JFrame {
         });
         jMenu2.add(jMenuItem3);
 
-        jMenuItem4.setText("liste des clients");
+        jMenuItem4.setText("Liste des clients");
         jMenuItem4.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenuItem4MouseClicked(evt);
@@ -361,6 +362,14 @@ public class MenuForm extends javax.swing.JFrame {
             }
         });
         jMenu2.add(jMenuItem4);
+
+        jMenuItem10.setText("Liste de login");
+        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem10ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem10);
 
         jMenuBar1.add(jMenu2);
 
@@ -572,8 +581,7 @@ public class MenuForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem11MouseClicked
 
     private void jMenuItem1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem1MouseClicked
-        ProductsForm pf = new ProductsForm();
-        pf.setVisible(true);
+      
     }//GEN-LAST:event_jMenuItem1MouseClicked
 
     private void jMenuItem2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem2MouseClicked
@@ -620,12 +628,12 @@ public class MenuForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu2ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        ProductsForm pf = new ProductsForm();
+        ProductsForm pf = new ProductsForm("Menu");
         pf.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        ProvidersForm pf = new ProvidersForm();
+        ProvidersForm pf = new ProvidersForm(this);
         pf.setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
@@ -633,6 +641,12 @@ public class MenuForm extends javax.swing.JFrame {
         ClientsForm cf = new ClientsForm();
         cf.setVisible(true);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+        StatisticalForm st = new StatisticalForm();
+        st.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jMenuItem10ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -682,6 +696,7 @@ public class MenuForm extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem12;
     private javax.swing.JMenuItem jMenuItem2;

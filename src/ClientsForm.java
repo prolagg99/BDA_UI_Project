@@ -71,7 +71,9 @@ public class ClientsForm extends javax.swing.JFrame {
             PreparedStatement ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             while(rs.next()){
-                userType.setText(rs.getString(2));
+//                if(rs.isLast()) {
+                    userType.setText(rs.getString(2));
+//                }
             }
             rs.close();
         } catch (Exception e) {

@@ -201,7 +201,7 @@ public class SellsForm extends javax.swing.JFrame {
 
         jPanel4.setBackground(new java.awt.Color(238, 232, 213));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imgs/home2.jpg"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imgs/statistic.jpg"))); // NOI18N
 
         delete.setBackground(new java.awt.Color(238, 232, 213));
         delete.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
