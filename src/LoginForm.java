@@ -389,8 +389,8 @@ public class LoginForm extends javax.swing.JFrame {
                         
                         ps1.setString(1, "Ingénieur");
                         ps1.setString(2, userName.getText());
-                        ps1.setDate(3, date);
-                        ps1.setString(4, service.getText());
+//                        ps1.setDate(3, date);
+                        ps1.setString(3, service.getText());
                         ps1.executeUpdate();
                     }
                 }else{

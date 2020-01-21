@@ -46,6 +46,19 @@ public class ProductsForm extends javax.swing.JFrame {
             delete.setVisible(false);
         }
     }
+       public ProductsForm() {
+        initComponents();
+        this.setLocationRelativeTo(null);
+        readProducts();
+        
+        userType();
+        userType.setVisible(false);
+        if(userType.getText().contains("Employé")){
+            add.setVisible(false);
+            update.setVisible(false);
+            delete.setVisible(false);
+        }
+    }
      
     SellsForm ofRowData = new SellsForm();
 
