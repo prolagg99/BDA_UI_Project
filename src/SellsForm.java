@@ -33,6 +33,9 @@ public class SellsForm extends javax.swing.JFrame {
         readSells();
         updateComboBox();
         qntStock.setEditable(false);
+        codeBare.setEditable(false);
+        désign.setEditable(false);
+        prixV.setEditable(false);
         
         userType();
         userType1.setVisible(false);
@@ -326,6 +329,9 @@ public class SellsForm extends javax.swing.JFrame {
         date.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 dateKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                dateKeyTyped(evt);
             }
         });
 
@@ -743,12 +749,20 @@ public class SellsForm extends javax.swing.JFrame {
         if(date.getText().trim().isEmpty()){
             date.setBorder(BorderFactory.createLineBorder(Color.red));
         }else
+            if(date.getText().length() != 10){
+                MsgForm mf = new MsgForm("date");
+                mf.setVisible(true);
+            }else
         if(prixV.getText().trim().isEmpty()){
             prixV.setBorder(BorderFactory.createLineBorder(Color.red));
         }else
         if(qnt.getText().trim().isEmpty()){
             qnt.setBorder(BorderFactory.createLineBorder(Color.red));
-        }else{
+        }else
+            if(Integer.parseInt(qnt.getText()) == 0){
+                MsgForm mf = new MsgForm("la quantité est null");
+                mf.setVisible(true);
+            }else{
             ResultSet rs = null;
             try (
                 Connection con = DbInfo.conDB();
@@ -909,12 +923,20 @@ public class SellsForm extends javax.swing.JFrame {
         if(date.getText().trim().isEmpty()){
             date.setBorder(BorderFactory.createLineBorder(Color.red));
         }else
+            if(date.getText().length() != 10){
+                MsgForm mf = new MsgForm("date");
+                mf.setVisible(true);
+            }else
         if(prixV.getText().trim().isEmpty()){
             prixV.setBorder(BorderFactory.createLineBorder(Color.red));
         }else
         if(qnt.getText().trim().isEmpty()){
             qnt.setBorder(BorderFactory.createLineBorder(Color.red));
-        }else{
+        }else
+            if(Integer.parseInt(qnt.getText()) == 0){
+                MsgForm mf = new MsgForm("la quantité est null");
+                mf.setVisible(true);
+            }else{
             
 //                String cb = codeBare.getText();
 //                String désg = désign.getText();
@@ -958,6 +980,7 @@ public class SellsForm extends javax.swing.JFrame {
 
                         MsgForm mf = new MsgForm("update");
                         mf.setVisible(true);
+                        
                         // update the qnt of products
                         String sql2="UPDATE `sproducts` SET `quantité`=? WHERE `désign`=? AND `codeBare`=?";
                         PreparedStatement ps2 = con.prepareStatement(sql2);
@@ -966,6 +989,7 @@ public class SellsForm extends javax.swing.JFrame {
                         ps2.setString(2, désign.getText());
                         ps2.setString(3, codeBare.getText());
                         ps2.executeUpdate();
+                        codeBare.setText("");désign.setText("");date.setText("");prixV.setText("");qnt.setText("");
                     }
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(this, e);
@@ -1023,6 +1047,13 @@ public class SellsForm extends javax.swing.JFrame {
         lf.setVisible(true);
         dispose();
     }//GEN-LAST:event_jLabel12MouseClicked
+
+    private void dateKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dateKeyTyped
+        char c = evt.getKeyChar();
+        if(Character.isLetter(c) &&! evt.isAltDown()){
+            evt.consume();
+        }
+    }//GEN-LAST:event_dateKeyTyped
 
     /**
      * @param args the command line arguments

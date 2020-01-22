@@ -31,7 +31,7 @@ public class OrderedProsuctsForm extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         readOrderdProducts();
         userType();
-        userType.setVisible(true);
+        userType.setVisible(false);
         if(userType.getText().contains("Employé")){
             add.setVisible(false);
             update.setVisible(false);
@@ -44,7 +44,7 @@ public class OrderedProsuctsForm extends javax.swing.JFrame {
         form = txt;
         readOrderdProducts();
         userType();
-        userType.setVisible(true);
+        userType.setVisible(false);
         if(userType.getText().contains("Employé")){
             add.setVisible(false);
             update.setVisible(false);

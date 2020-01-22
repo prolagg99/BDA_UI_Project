@@ -338,6 +338,9 @@ public class OrderForm extends javax.swing.JFrame {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 dateKeyReleased(evt);
             }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                dateKeyTyped(evt);
+            }
         });
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
@@ -657,12 +660,20 @@ public class OrderForm extends javax.swing.JFrame {
         if(date.getText().trim().isEmpty()){
             date.setBorder(BorderFactory.createLineBorder(Color.red));
         }else
+            if(date.getText().length() != 10){
+                MsgForm mf = new MsgForm("date");
+                mf.setVisible(true);
+            }else
         if(prix.getText().trim().isEmpty()){
             prix.setBorder(BorderFactory.createLineBorder(Color.red));
         }else
         if(qnt.getText().trim().isEmpty()){
             qnt.setBorder(BorderFactory.createLineBorder(Color.red));
-        }else{
+        }else
+            if(Integer.parseInt(qnt.getText()) == 0){
+                MsgForm mf = new MsgForm("la quantité est null");
+                mf.setVisible(true);
+            }else{
             try (
                 Connection con = DbInfo.conDB();
                 ){
@@ -822,12 +833,20 @@ public class OrderForm extends javax.swing.JFrame {
         if(date.getText().trim().isEmpty()){
             date.setBorder(BorderFactory.createLineBorder(Color.red));
         }else
+            if(date.getText().length() != 10){
+                MsgForm mf = new MsgForm("date");
+                mf.setVisible(true);
+            }else
         if(prix.getText().trim().isEmpty()){
             prix.setBorder(BorderFactory.createLineBorder(Color.red));
         }else
         if(qnt.getText().trim().isEmpty()){
             qnt.setBorder(BorderFactory.createLineBorder(Color.red));
-        }else{
+        }else
+            if(Integer.parseInt(qnt.getText()) == 0){
+                MsgForm mf = new MsgForm("la quantité est null");
+                mf.setVisible(true);
+            }else{
             try (
                 Connection con = DbInfo.conDB();
                 ){
@@ -849,6 +868,7 @@ public class OrderForm extends javax.swing.JFrame {
 
                 MsgForm mf = new MsgForm("update");
                 mf.setVisible(true);
+                codeBare.setText("");désign.setText("");date.setText("");prix.setText("");qnt.setText("");
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, e);
             }
@@ -864,6 +884,13 @@ public class OrderForm extends javax.swing.JFrame {
         lf.setVisible(true);
         dispose();
     }//GEN-LAST:event_jLabel12MouseClicked
+
+    private void dateKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dateKeyTyped
+        char c = evt.getKeyChar();
+        if(Character.isLetter(c) &&! evt.isAltDown()){
+            evt.consume();
+        }
+    }//GEN-LAST:event_dateKeyTyped
 
     /**
      * @param args the command line arguments

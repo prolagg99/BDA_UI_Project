@@ -56,6 +56,12 @@ public class MsgForm extends javax.swing.JFrame {
         if(txt == "noRowSelected"){
             jLabel1.setText("Sélectionner une ligne!");
         }
+        if(txt == "date"){
+            jLabel1.setText("Saisir une date valid! year/month/day");
+        }
+        if(txt == "la quantité est null"){
+            jLabel1.setText("la quantité est null");
+        }
         
         
         jLabel1.setHorizontalAlignment(JLabel.CENTER);
